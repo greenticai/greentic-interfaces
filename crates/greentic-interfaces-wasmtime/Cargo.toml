@@ -4,7 +4,7 @@ version.workspace = true
 edition = "2024"
 rust-version = "1.91"
 license = "MIT"
-repository = "https://github.com/greentic-ai/greentic-interfaces-wasmtime"
+repository = "https://github.com/greenticai/greentic-interfaces-wasmtime"
 description = "Wasmtime host & guest shims for greentic WIT worlds (sync; auto-discovered)"
 
 [features]
@@ -29,3 +29,4 @@ walkdir = { workspace = true }
 [dev-dependencies]
 wat = { workspace = true }
 wasmtime-wasi = { workspace = true }
+

@@ -106,8 +106,8 @@ jobs:
         run: |
           set -euo pipefail
           bundle="target/wit-packages/greentic-interfaces-wit-1.0.0.tar.gz"
-          primary_image="ghcr.io/greentic-ai/greentic-interfaces-wit:1.0.0"
-          fallback_image="ghcr.io/greentic-ai-org/greentic-interfaces-wit:1.0.0"
+          primary_image="ghcr.io/greenticai/greentic-interfaces-wit:1.0.0"
+          fallback_image="ghcr.io/greenticai-org/greentic-interfaces-wit:1.0.0"
 
           if oras push "${primary_image}" \
             --artifact-type application/vnd.greentic.wit.bundle.v1+tar \
@@ -140,3 +140,4 @@ jobs:
             echo "Publishing ${image} from ${f}"
             wkg oci push "${image}" "$f"
           done
+

@@ -1,6 +1,6 @@
 # GI-PR-01 — Add `greentic:pack-validate@0.1.0` WIT (Validator-as-WASM contract)
 
-REPO: greentic-ai/greentic-interfaces
+REPO: greenticai/greentic-interfaces
 
 GOAL
 Introduce a stable WIT interface so validators can be shipped as WASM components/packs and executed by `greentic-pack doctor` without hardcoding domains.
@@ -18,3 +18,4 @@ DELIVERABLES
 
 ACCEPTANCE
 - WIT compiles/validates in CI and is consumable by downstream crates.
+

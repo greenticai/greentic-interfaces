@@ -20,8 +20,8 @@ Refer to `contracts/0.6.0/RENAMES.md` for the full naming dictionary and `contra
 - `greentic:codec@0.6.0` is a lightweight helper world for encoding/decoding CBOR payloads; tooling that emits descriptor examples or call specs can import it to keep hashes stable.
 - `greentic:component@0.6.0` is the CBOR-first component world: `describe()` returns a `component-descriptor` with ops, schema refs (hash + uri), optional setup, and capabilities, while `invoke()` consumes the host-built `InvocationEnvelope` and returns a structured `InvocationResult`.
 
-[![CI](https://github.com/greentic-ai/greentic-interfaces/actions/workflows/ci.yml/badge.svg)](https://github.com/greentic-ai/greentic-interfaces/actions/workflows/ci.yml)
-[![WIT Docs](https://img.shields.io/badge/docs-WIT%20packages-4c9)](https://greentic-ai.github.io/greentic-interfaces/)
+[![CI](https://github.com/greenticai/greentic-interfaces/actions/workflows/ci.yml/badge.svg)](https://github.com/greenticai/greentic-interfaces/actions/workflows/ci.yml)
+[![WIT Docs](https://img.shields.io/badge/docs-WIT%20packages-4c9)](https://greenticai.github.io/greentic-interfaces/)
 [![MSRV](https://img.shields.io/badge/MSRV-1.91%2B-blue)](#minimum-supported-rust-version)
 
 > Canonical runtime target: `greentic:component@0.6.0` + `greentic:types-core@0.6.0` + `greentic:codec@0.6.0`.
@@ -47,7 +47,7 @@ Legacy JSON component config guidance (`component@0.5.0`) is tracked in `docs/vi
 - `pack-export-v1`: enables `greentic:pack-export-v1@0.1.0` (pack-host world) and reexports the pack/flow descriptor mappers.
 - Default and `wit-all` now include these flags; guest builds also stage the v1 WIT packages when the features are on.
 
-- [`crates/greentic-interfaces`](crates/greentic-interfaces) exposes the WebAssembly Interface Types (WIT) packages, generated Rust bindings, and thin mappers that bridge the generated types to the richer structures in [`greentic-types`](https://github.com/greentic-ai/greentic-types). It is intentionally ABI-only and has no Wasmtime dependency.
+- [`crates/greentic-interfaces`](crates/greentic-interfaces) exposes the WebAssembly Interface Types (WIT) packages, generated Rust bindings, and thin mappers that bridge the generated types to the richer structures in [`greentic-types`](https://github.com/greenticai/greentic-types). It is intentionally ABI-only and has no Wasmtime dependency.
 - [`crates/greentic-interfaces-host`](crates/greentic-interfaces-host) curates the host-facing bindings: Wasmtime-ready WIT worlds plus the shared mappers.
 - [`crates/greentic-interfaces-guest`](crates/greentic-interfaces-guest) curates the guest-facing bindings for components built against `wasm32-wasip2`, including distributor API import bindings plus `DistributorApiImports` (`distributor-api-imports`) and `DistributorApiImportsV1_1` (`distributor-api-v1-1-imports`) for resolve/get/get-v2/warm and ref-based resolution + digest fetches.
 - [`crates/greentic-interfaces-wasmtime`](crates/greentic-interfaces-wasmtime) hosts the Wasmtime integration layer. It wires the Greentic host imports into a Wasmtime linker, instantiates components, and forwards calls through the ABI bindings.
@@ -187,30 +187,30 @@ For local development you can override the crates.io dependency on `greentic-typ
 
 | Feature | World(s) enabled | Published package | Notes |
 | --- | --- | --- | --- |
-| `secrets-store-v1` | `greentic:secrets-store/store@1.0.0` (`store`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/secrets-store@1.0.0/package.wit) | Read-only secret lookup (`get`) returning bytes with structured errors. |
-| `state-store-v1` | `greentic:state/store@1.0.0` (`store`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/state-store@1.0.0/package.wit) | Tenant-scoped blob store aligned with `HostCapabilities.state`. |
-| `http-client-v1` | `greentic:http/client@1.0.0` (`client`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/http-client@1.0.0/package.wit) | Preview 2 HTTP client matching `HostCapabilities.http`. |
-| `http-client-v1-1` | `greentic:http/client@1.1.0` (`client`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/http-client@1.1.0/package.wit) | Adds optional `request-options` + tenant context; hosts should also expose `@1.0.0` for legacy bundles. |
-| `telemetry-logger-v1` | `greentic:telemetry/logger@1.0.0` (`logger`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/telemetry-logger@1.0.0/package.wit) | Tenant-aware telemetry logger aligned with `HostCapabilities.telemetry`. |
-| `worker-api` | `greentic:worker/worker@1.0.0` (`worker`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/worker@1.0.0/package.wit) | Generic worker request/response envelope; see `docs/worker.md` for details. |
-| `gui-fragment` | `greentic:gui/gui-fragment@1.0.0` (`gui-fragment`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/gui@1.0.0/package.wit) | Server-rendered HTML fragments for Greentic-GUI; hosts call `render-fragment(fragment-id, ctx)` and inject the returned HTML. |
-| `oauth-broker-v1` | `greentic:oauth-broker@1.0.0` (`broker`, `broker-client`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/oauth-broker@1.0.0/package.wit) | Generic OAuth broker: hosts implement the broker world; guest components import via the new `broker-client` world to build consent URLs, exchange codes, and fetch tokens. |
-| `component-v0-5` | `greentic:component/component@0.5.0` (`component`, `component-configurable`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/component@0.5.0/package.wit) | Config-aware component ABI with a canonical `@config` record; optional `get-config-schema()` export for JSON Schema overrides; `component@0.4.0` remains available for legacy consumers. |
-| `describe-v1` | `greentic:component@1.0.0` (`describe-v1`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/component@1.0.0/package.wit) | Describe-only schema export for packs without the full component ABI. |
-| `runner-host-v1` | `greentic:host@1.0.0` (`http-v1`, `kv-v1`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/host@1.0.0/package.wit) | Legacy runner host bundle (now secrets-free; kept only for HTTP/KV). |
-| `operator-hooks-v1` | `greentic:operator@1.0.0` (`hook-provider`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/operator@1.0.0/package.wit) | Operation envelope + hook decision contracts for pre/post operator interceptors. |
-| `component-lifecycle-v1` | `greentic:lifecycle@1.0.0` (`lifecycle-v1`) | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/lifecycle@1.0.0/package.wit) | Optional lifecycle hooks (`init`, `health`, `shutdown`). |
-| `source-v1` | `greentic:source/source-sync@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/source@1.0.0/package.wit) | Tenant-scoped source provider interface (list repos/branches, commit metadata, webhooks). |
-| `build-v1` | `greentic:build/builder@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/build@1.0.0/package.wit) | Tenant-scoped build execution (build plan/status/log refs). |
-| `scan-v1` | `greentic:scan/scanner@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/scan@1.0.0/package.wit) | Tenant-scoped scan execution (scan kind/result/SBOM refs). |
-| `signing-v1` | `greentic:signing/signer@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/signing@1.0.0/package.wit) | Tenant-scoped signing/verification using signing key refs. |
-| `attestation-v1` | `greentic:attestation/attester@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/attestation@1.0.0/package.wit) | Tenant-scoped attestation generation (predicate/statement refs). |
-| `policy-v1` | `greentic:policy/policy-evaluator@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/policy@1.0.0/package.wit) | Tenant-scoped policy evaluation (allow/deny with reasons). |
-| `metadata-v1` | `greentic:metadata/metadata-store@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/metadata@1.0.0/package.wit) | Tenant-scoped metadata upsert/query for components/versions. |
-| `distributor-api` | `greentic:distributor-api/distributor-api@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/distributor@1.0.0/package.wit) | Active distributor API for runner/deployer flows: resolve-component (includes secret requirements), legacy `get-pack-status` string, structured `get-pack-status-v2` (status + secret requirements), and warm-pack; guests can also enable `distributor-api-imports` for import bindings plus a `DistributorApiImports` helper. |
-| `distributor-api-v1-1` | `greentic:distributor-api/distributor-api@1.1.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/distributor@1.1.0/package.wit) | Adds ref-based resolution (`resolve-ref`) and digest fetching (`get-by-digest`) for OCI component references (tag or digest); keep `@1.0.0` for pack-id + component-id flows. |
-| `distribution-v1` | `greentic:distribution/distribution@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/distribution@1.0.0/package.wit) | Experimental desired state submission/retrieval (tenant + IDs + JSON blobs), not used by current flows. |
-| `oci-v1` | `greentic:oci/oci-distribution@1.0.0` | [`package.wit`](https://greentic-ai.github.io/greentic-interfaces/oci@1.0.0/package.wit) | Tenant-scoped OCI distribution helpers (push/get pull reference). |
+| `secrets-store-v1` | `greentic:secrets-store/store@1.0.0` (`store`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/secrets-store@1.0.0/package.wit) | Read-only secret lookup (`get`) returning bytes with structured errors. |
+| `state-store-v1` | `greentic:state/store@1.0.0` (`store`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/state-store@1.0.0/package.wit) | Tenant-scoped blob store aligned with `HostCapabilities.state`. |
+| `http-client-v1` | `greentic:http/client@1.0.0` (`client`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/http-client@1.0.0/package.wit) | Preview 2 HTTP client matching `HostCapabilities.http`. |
+| `http-client-v1-1` | `greentic:http/client@1.1.0` (`client`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/http-client@1.1.0/package.wit) | Adds optional `request-options` + tenant context; hosts should also expose `@1.0.0` for legacy bundles. |
+| `telemetry-logger-v1` | `greentic:telemetry/logger@1.0.0` (`logger`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/telemetry-logger@1.0.0/package.wit) | Tenant-aware telemetry logger aligned with `HostCapabilities.telemetry`. |
+| `worker-api` | `greentic:worker/worker@1.0.0` (`worker`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/worker@1.0.0/package.wit) | Generic worker request/response envelope; see `docs/worker.md` for details. |
+| `gui-fragment` | `greentic:gui/gui-fragment@1.0.0` (`gui-fragment`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/gui@1.0.0/package.wit) | Server-rendered HTML fragments for Greentic-GUI; hosts call `render-fragment(fragment-id, ctx)` and inject the returned HTML. |
+| `oauth-broker-v1` | `greentic:oauth-broker@1.0.0` (`broker`, `broker-client`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/oauth-broker@1.0.0/package.wit) | Generic OAuth broker: hosts implement the broker world; guest components import via the new `broker-client` world to build consent URLs, exchange codes, and fetch tokens. |
+| `component-v0-5` | `greentic:component/component@0.5.0` (`component`, `component-configurable`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/component@0.5.0/package.wit) | Config-aware component ABI with a canonical `@config` record; optional `get-config-schema()` export for JSON Schema overrides; `component@0.4.0` remains available for legacy consumers. |
+| `describe-v1` | `greentic:component@1.0.0` (`describe-v1`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/component@1.0.0/package.wit) | Describe-only schema export for packs without the full component ABI. |
+| `runner-host-v1` | `greentic:host@1.0.0` (`http-v1`, `kv-v1`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/host@1.0.0/package.wit) | Legacy runner host bundle (now secrets-free; kept only for HTTP/KV). |
+| `operator-hooks-v1` | `greentic:operator@1.0.0` (`hook-provider`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/operator@1.0.0/package.wit) | Operation envelope + hook decision contracts for pre/post operator interceptors. |
+| `component-lifecycle-v1` | `greentic:lifecycle@1.0.0` (`lifecycle-v1`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/lifecycle@1.0.0/package.wit) | Optional lifecycle hooks (`init`, `health`, `shutdown`). |
+| `source-v1` | `greentic:source/source-sync@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/source@1.0.0/package.wit) | Tenant-scoped source provider interface (list repos/branches, commit metadata, webhooks). |
+| `build-v1` | `greentic:build/builder@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/build@1.0.0/package.wit) | Tenant-scoped build execution (build plan/status/log refs). |
+| `scan-v1` | `greentic:scan/scanner@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/scan@1.0.0/package.wit) | Tenant-scoped scan execution (scan kind/result/SBOM refs). |
+| `signing-v1` | `greentic:signing/signer@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/signing@1.0.0/package.wit) | Tenant-scoped signing/verification using signing key refs. |
+| `attestation-v1` | `greentic:attestation/attester@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/attestation@1.0.0/package.wit) | Tenant-scoped attestation generation (predicate/statement refs). |
+| `policy-v1` | `greentic:policy/policy-evaluator@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/policy@1.0.0/package.wit) | Tenant-scoped policy evaluation (allow/deny with reasons). |
+| `metadata-v1` | `greentic:metadata/metadata-store@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/metadata@1.0.0/package.wit) | Tenant-scoped metadata upsert/query for components/versions. |
+| `distributor-api` | `greentic:distributor-api/distributor-api@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/distributor@1.0.0/package.wit) | Active distributor API for runner/deployer flows: resolve-component (includes secret requirements), legacy `get-pack-status` string, structured `get-pack-status-v2` (status + secret requirements), and warm-pack; guests can also enable `distributor-api-imports` for import bindings plus a `DistributorApiImports` helper. |
+| `distributor-api-v1-1` | `greentic:distributor-api/distributor-api@1.1.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/distributor@1.1.0/package.wit) | Adds ref-based resolution (`resolve-ref`) and digest fetching (`get-by-digest`) for OCI component references (tag or digest); keep `@1.0.0` for pack-id + component-id flows. |
+| `distribution-v1` | `greentic:distribution/distribution@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/distribution@1.0.0/package.wit) | Experimental desired state submission/retrieval (tenant + IDs + JSON blobs), not used by current flows. |
+| `oci-v1` | `greentic:oci/oci-distribution@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/oci@1.0.0/package.wit) | Tenant-scoped OCI distribution helpers (push/get pull reference). |
 | `wit-all` | Aggregates every feature above plus the legacy defaults (`component-v0-4`, `types-core-*`, etc.) | – | Handy opt-in when you just want “everything on”. |
 
 Additional shared package: `provider:common@0.0.2` (under `wit/provider-common/world.wit`) carries messaging provider metadata, capability flags, limits, render tiers, warnings, and encoded payload helpers for provider components. Enable the `provider-common` feature to generate bindings; the package remains additive and shared across messaging providers.
@@ -338,7 +338,7 @@ The runtime crate provides Wasmtime glue for the Greentic WIT packages: an engin
 
 ## Provenance
 
-Every tagged release publishes a tarball, checksum, raw `package.wit` files, and a signed provenance note that enumerates per-package hashes. Grab the [latest release notes](https://github.com/greentic-ai/greentic-interfaces/releases/latest/download/RELEASE_NOTES.md) to verify what you downloaded.
+Every tagged release publishes a tarball, checksum, raw `package.wit` files, and a signed provenance note that enumerates per-package hashes. Grab the [latest release notes](https://github.com/greenticai/greentic-interfaces/releases/latest/download/RELEASE_NOTES.md) to verify what you downloaded.
 
 ## Local Checks
 
@@ -359,7 +359,7 @@ A `pre-push` hook is installed automatically (if absent) to run the script befor
 
 ## Fetching WIT packages from OCI
 
-The published WIT bundles live in GitHub Container Registry under `ghcr.io/greentic-ai/wit`. The registry metadata served from `https://greentic.ai/.well-known/wasm-pkg/registry.json` advertises this prefix, so any `wkg` client can resolve the `greentic:*` namespace automatically.
+The published WIT bundles live in GitHub Container Registry under `ghcr.io/greenticai/wit`. The registry metadata served from `https://greentic.ai/.well-known/wasm-pkg/registry.json` advertises this prefix, so any `wkg` client can resolve the `greentic:*` namespace automatically.
 
 ```bash
 # 1. Install the wasm packaging CLI
@@ -368,7 +368,7 @@ cargo install wkg
 # 2. Point your config at the Greentic registry (writes ~/.config/wasm-pkg/config.toml)
 wkg config --default-registry greentic.ai
 
-# 3. Fetch the desired package (auto-discovers ghcr.io/greentic-ai/wit/<namespace>/<pkg>)
+# 3. Fetch the desired package (auto-discovers ghcr.io/greenticai/wit/<namespace>/<pkg>)
 wkg get greentic:component@1.0.0 --output ./component.wasm
 # or grab the raw WIT:
 wkg get greentic:component@1.0.0 --output ./component.wit --format wit
@@ -381,7 +381,7 @@ If you prefer to edit the config file manually, add this stanza:
 greentic = "greentic.ai"
 ```
 
-With that mapping in place the CLI will transparently pull from GHCR using the namespace prefix advertised by the registry metadata (`greentic-ai/wit/`).
+With that mapping in place the CLI will transparently pull from GHCR using the namespace prefix advertised by the registry metadata (`greenticai/wit/`).
 
 Legacy secrets provider surfaces are documented for migration notes in `docs/secrets-provider.md`; provider-core JSON schemas have replaced the typed provider WIT worlds.
 
@@ -408,3 +408,4 @@ interface secrets-store {
 ```
 
 - `get` returns `Some(bytes)` when the secret exists, `None` when absent, and a structured `secrets-error` when the host rejects or cannot service the lookup.
+

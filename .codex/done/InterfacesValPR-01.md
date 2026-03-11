@@ -1,6 +1,6 @@
 # InterfacesValPR-01 — Add `greentic:pack-validate@0.1.0` WIT (Validator-as-WASM contract)
 
-**Repo:** `greentic-ai/greentic-interfaces`
+**Repo:** `greenticai/greentic-interfaces`
 
 ## Goal
 Introduce a stable WIT interface that allows pack validators to be shipped as WASM components and executed by `greentic-pack doctor` (and other tooling) without hardcoding domains.
@@ -70,3 +70,4 @@ Add `docs/pack-validate.md`:
 ## Acceptance criteria
 - `greentic:pack-validate@0.1.0` is present in the repo and can be consumed by downstream repos.
 - World compiles/validates in repo CI.
+

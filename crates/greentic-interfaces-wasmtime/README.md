@@ -1,6 +1,6 @@
 # Greentic Interfaces Wasmtime Runtime Helpers
 
-`greentic-interfaces-wasmtime` provides the Wasmtime integration layer for the Greentic platform. It wires host services into a Wasmtime component linker, offers convenience helpers for building engines, and exposes mapper utilities that bridge the ABI structs published by [`greentic-interfaces`](../greentic-interfaces) with the richer models from [`greentic-types`](https://github.com/greentic-ai/greentic-types).
+`greentic-interfaces-wasmtime` provides the Wasmtime integration layer for the Greentic platform. It wires host services into a Wasmtime component linker, offers convenience helpers for building engines, and exposes mapper utilities that bridge the ABI structs published by [`greentic-interfaces`](../greentic-interfaces) with the richer models from [`greentic-types`](https://github.com/greenticai/greentic-types).
 
 ## Feature flags
 
@@ -50,3 +50,4 @@ v1::add_all_v1_to_linker(
 ```
 
 Implement the `Host` trait from each `v1` module (e.g. `v1::http_client::HttpClientHostV1_1` for HTTP or `HttpClientHost` for the legacy `@1.0.0`) on your host state and keep the generated module paths internal.
+

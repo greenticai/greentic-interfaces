@@ -2,6 +2,7 @@
   "preferredProtocol": "oci",
   "oci": {
     "registry": "ghcr.io",
-    "namespacePrefix": "greentic-ai/greentic-interfaces/wit/"
+    "namespacePrefix": "greenticai/greentic-interfaces/wit/"
   }
 }
+

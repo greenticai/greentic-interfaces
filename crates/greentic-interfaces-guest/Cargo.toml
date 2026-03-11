@@ -4,10 +4,10 @@ version.workspace = true
 edition = "2024"
 rust-version = "1.91"
 license = "MIT"
-repository = "https://github.com/greentic-ai/greentic-interfaces"
+repository = "https://github.com/greenticai/greentic-interfaces"
 description = "Guest-facing bindings for Greentic components targeting wasm32-wasip2"
 documentation = "https://docs.rs/greentic-interfaces-guest"
-homepage = "https://github.com/greentic-ai/greentic-interfaces"
+homepage = "https://github.com/greenticai/greentic-interfaces"
 
 [dependencies]
 greentic-types = { workspace = true }
@@ -105,3 +105,4 @@ wit-bindgen-rust = { workspace = true }
 
 [dev-dependencies]
 trybuild = "1"
+

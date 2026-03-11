@@ -1,6 +1,6 @@
 # GI-PR-02 — Add provisioning WIT contract skeleton (future reuse)
 
-REPO: greentic-ai/greentic-interfaces
+REPO: greenticai/greentic-interfaces
 
 GOAL
 Add a minimal, stable WIT contract for provisioning/setup wizards so provider extension packs can expose standardized setup flows.
@@ -19,3 +19,4 @@ Keep this PR minimal: define types and placeholders, no full implementation.
 
 ACCEPTANCE
 - WIT compiles/validates; downstream can generate bindings.
+
