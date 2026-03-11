@@ -227,3 +227,16 @@ fn no_legacy_component_v0_v6_wit_mirrors_exist() {
         wasmtime.display()
     );
 }
+
+#[test]
+fn wit_all_uses_packaged_wit_paths() {
+    let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let source = manifest_dir.join("src/wit_all.rs");
+    let contents = std::fs::read_to_string(&source)
+        .unwrap_or_else(|_| panic!("failed to read {}", source.display()));
+
+    assert!(
+        !contents.contains("target/wit-staging"),
+        "src/wit_all.rs must not reference build-local staged WIT paths"
+    );
+}

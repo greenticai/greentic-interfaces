@@ -24,9 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let out_dir = PathBuf::from(env::var("OUT_DIR")?);
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
-    let staged_root = manifest_dir.join("target").join("wit-staging");
-    // Keep staging stable for `src/wit_all.rs` relative paths and avoid
-    // concurrent build-script races by not deleting the shared directory.
+    let staged_root = out_dir.join("wit-staging");
     fs::create_dir_all(&staged_root)?;
 
     let wit_root = resolve_wit_root(&manifest_dir)?;

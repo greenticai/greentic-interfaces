@@ -11,6 +11,15 @@ readme = "README.md"
 documentation = "https://docs.rs/greentic-interfaces"
 keywords = ["greentic", "wit", "wasm", "component"]
 categories = ["wasm", "api-bindings"]
+include = [
+    "Cargo.toml",
+    "README.md",
+    "build.rs",
+    "src/**",
+    "tests/**",
+    "wit/**",
+    "bundled-wit/**",
+]
 
 [features]
 default = [

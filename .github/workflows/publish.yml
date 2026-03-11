@@ -114,13 +114,13 @@ jobs:
         run: cargo build --manifest-path crates/greentic-interfaces-guest/Cargo.toml --target wasm32-wasip2
       - name: Prune wasm artifacts to save space
         run: rm -rf target/wasm32-wasip2
-      - name: Verify packageability for public WIT crates
-        run: cargo package --no-verify -p greentic-interfaces -p greentic-interfaces-wasmtime
+      - name: Verify packageability for greentic-interfaces-wasmtime
+        run: cargo package --no-verify -p greentic-interfaces-wasmtime
       - name: Wasmtime external consumer smoke
         run: bash ci/smoke/wasmtime_consumer.sh
       - run: cargo build --workspace --all-features
       - run: cargo test --workspace --all-features
-      - name: Packaged external consumer check (greentic-interfaces)
+      - name: Packaged source validation (greentic-interfaces)
         run: bash ci/steps/external_consumer_check.sh
       - name: Build describe-v1 component example
         env:

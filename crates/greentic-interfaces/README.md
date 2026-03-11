@@ -53,7 +53,7 @@ New development should target `wasix:mcp@25.6.18` (current spec). Older versions
 - Host (router): enable `repo-ui-actions-v1` in `greentic-interfaces` or import via `greentic-interfaces-host::ui_actions::repo_ui_worker`, instantiate the component with Wasmtime, and invoke `handle-action(tenant, page, action, payload-json)`.
 - All components must target `wasm32-wasip2`; the host bindings are ABI-only and stay domain-agnostic.
 
-The build script stages each package (plus dependencies) into `$OUT_DIR/wit-staging` so downstream tooling resolves imports deterministically. The absolute path is exported as `WIT_STAGING_DIR`, so consumers never need write access to the package directory even when building from crates.io.
+The crate ships its canonical source WIT under [`wit/`](./wit) plus a packaged, self-contained staged tree under [`bundled-wit/`](./bundled-wit). Host-side `wasmtime::component::bindgen!` entry points resolve from `bundled-wit/`, while the build script still stages a derived copy into `$OUT_DIR/wit-staging` for internal validation and generated bindings, exposed as `WIT_STAGING_DIR`.
 
 ### TenantCtx optional fields
 

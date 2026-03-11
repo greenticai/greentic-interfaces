@@ -3,16 +3,14 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CRATE_NAME="greentic-interfaces"
-ALLOW_DIRTY="${EXTERNAL_CONSUMER_ALLOW_DIRTY:-0}"
 
 cd "${ROOT}"
 
 echo "[external-consumer] packaging ${CRATE_NAME}"
-package_args=(package --no-verify -p "${CRATE_NAME}")
-if [[ "${ALLOW_DIRTY}" == "1" ]]; then
-  package_args+=(--allow-dirty)
-fi
-cargo "${package_args[@]}"
+cargo package --allow-dirty -p "${CRATE_NAME}"
+
+echo "[external-consumer] listing packaged files for ${CRATE_NAME}"
+cargo package --allow-dirty --list -p "${CRATE_NAME}"
 
 crate_tar="$(ls -1t "target/package/${CRATE_NAME}-"*.crate | head -n1)"
 if [[ -z "${crate_tar}" ]]; then
@@ -39,6 +37,9 @@ if [[ ! -d "${unpacked_path}" ]]; then
   echo "ERROR: unpacked crate path not found: ${unpacked_path}" >&2
   exit 1
 fi
+
+echo "[external-consumer] cargo build from unpacked crate"
+cargo build --manifest-path "${unpacked_path}/Cargo.toml"
 
 cat > "${consumer_root}/Cargo.toml" <<EOF
 [package]
