@@ -1,6 +1,6 @@
 # Greentic Interfaces Wasmtime Runtime Helpers
 
-`greentic-interfaces-wasmtime` provides the Wasmtime integration layer for the Greentic platform. It wires host services into a Wasmtime component linker, offers convenience helpers for building engines, and exposes mapper utilities that bridge the ABI structs published by [`greentic-interfaces`](../greentic-interfaces) with the richer models from [`greentic-types`](https://github.com/greentic-ai/greentic-types).
+`greentic-interfaces-wasmtime` provides the Wasmtime integration layer for the Greentic platform. It wires host services into a Wasmtime component linker, offers convenience helpers for building engines, and exposes mapper utilities that bridge the ABI structs published by [`greentic-interfaces`](../greentic-interfaces) with the richer models from [`greentic-types`](https://github.com/greenticai/greentic-types).
 
 ## Feature flags
 

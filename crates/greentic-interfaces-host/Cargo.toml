@@ -4,10 +4,10 @@ version.workspace = true
 edition = "2024"
 rust-version = "1.91"
 license = "MIT"
-repository = "https://github.com/greentic-ai/greentic-interfaces"
+repository = "https://github.com/greenticai/greentic-interfaces"
 description = "Host-facing bindings and mappers for Greentic WIT packages"
 documentation = "https://docs.rs/greentic-interfaces-host"
-homepage = "https://github.com/greentic-ai/greentic-interfaces"
+homepage = "https://github.com/greenticai/greentic-interfaces"
 
 [dependencies]
 greentic-interfaces = { workspace = true, features = ["wit-all"] }
