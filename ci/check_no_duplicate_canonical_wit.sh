@@ -13,6 +13,7 @@ MATCHES_ALL="$(rg -n --hidden --glob '!.git/*' --glob '*.wit' \
   --glob '!crates/greentic-interfaces-guest/wit/**' \
   --glob '!crates/greentic-interfaces-wasmtime/wit/**' \
   --glob '!guest-tests/**/wit/**' \
+  --glob '!crates/greentic-interfaces/bundled-wit/**' \
   --glob '!**/target/**' \
   --glob '!**/out/**' \
   --glob '!**/wit-staging/**' \
