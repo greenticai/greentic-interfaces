@@ -271,7 +271,7 @@ dependencies = [
 
 [[package]]
 name = "component-describe"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "wit-bindgen 0.53.1",
 ]
@@ -543,7 +543,7 @@ dependencies = [
 
 [[package]]
 name = "distributor-api-dummy"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "wit-bindgen 0.53.1",
 ]
@@ -778,7 +778,7 @@ checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 
 [[package]]
 name = "greentic-interfaces"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "anyhow",
  "greentic-types",
@@ -799,14 +799,14 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-crates-io-consumer"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "greentic-interfaces",
 ]
 
 [[package]]
 name = "greentic-interfaces-guest"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "greentic-interfaces",
  "greentic-types",
@@ -818,7 +818,7 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-host"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "greentic-interfaces",
  "greentic-types",
@@ -829,7 +829,7 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-wasmtime"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "anyhow",
  "camino",
@@ -869,7 +869,7 @@ dependencies = [
 
 [[package]]
 name = "guest-node-minimal"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "greentic-interfaces-guest",
  "greentic-types",
@@ -1233,7 +1233,7 @@ dependencies = [
 
 [[package]]
 name = "oauth-broker-client-harness"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "wit-bindgen 0.53.1",
 ]
@@ -1325,7 +1325,7 @@ dependencies = [
 
 [[package]]
 name = "provider-core-dummy"
-version = "0.4.108"
+version = "0.4.109"
 dependencies = [
  "wit-bindgen 0.53.1",
 ]

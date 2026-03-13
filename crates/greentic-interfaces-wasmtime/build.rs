@@ -45,8 +45,6 @@ fn module_name_from_dir_and_world(dir: &str, world: &str) -> String {
 
 fn main() {
     let out_dir = Utf8PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not set"));
-    let manifest_dir =
-        Utf8PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set"));
     let canonical_root = Utf8PathBuf::from_path_buf(greentic_interfaces::wit_root())
         .expect("canonical WIT root must be valid UTF-8");
     assert!(
@@ -55,7 +53,9 @@ fn main() {
         canonical_root
     );
     let wit_root = canonical_root.join("greentic");
-    let staged_root = manifest_dir.join("target").join("wit-staging-wasmtime");
+    // Build scripts for crates.io dependencies run from Cargo's registry cache, so all generated
+    // WIT staging must stay under OUT_DIR rather than CARGO_MANIFEST_DIR/target.
+    let staged_root = out_dir.join("wit-staging-wasmtime");
     reset_directory(&staged_root);
     println!("cargo:rerun-if-changed={}", canonical_root);
 
