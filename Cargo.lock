@@ -1436,7 +1436,7 @@ dependencies = [
 name = "repo-ui-actions-dummy"
 version = "0.1.0"
 dependencies = [
- "wit-bindgen 0.51.0",
+ "wit-bindgen 0.53.1",
  "wit-bindgen-rt",
 ]
 
