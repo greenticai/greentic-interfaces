@@ -21,7 +21,9 @@ permissions:
 
 jobs:
   codex-fix:
-    if: github.actor != 'dependabot[bot]'
+    if: >
+      github.actor != 'dependabot[bot]' &&
+      (secrets.OPENAI_API_KEY != '' || secrets.CODEX_OPENAI_API_KEY != '')
     runs-on: ubuntu-latest
     permissions:
       contents: write
