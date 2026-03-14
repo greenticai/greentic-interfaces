@@ -6,3 +6,17 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
     rebase-strategy: "auto"
+    groups:
+      greentic-interfaces-stack:
+        patterns:
+          - "greentic-interfaces"
+          - "greentic-interfaces-*"
+      wasmtime-stack:
+        patterns:
+          - "wasmtime"
+          - "wasmtime-*"
+      wit-bindgen-stack:
+        patterns:
+          - "wit-bindgen"
+          - "wit-bindgen-*"
+          - "wit-parser"
