@@ -21,23 +21,38 @@ permissions:
 
 jobs:
   codex-fix:
-    if: >
-      github.actor != 'dependabot[bot]' &&
-      (secrets.OPENAI_API_KEY != '' || secrets.CODEX_OPENAI_API_KEY != '')
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
       security-events: read
     steps:
+      - name: Check Codex availability
+        id: codex_available
+        shell: bash
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${OPENAI_API_KEY:-}" ] || [ -n "${CODEX_OPENAI_API_KEY:-}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Codex API key is not configured; skipping Codex remediation."
+          fi
+
       - name: Checkout code
+        if: steps.codex_available.outputs.enabled == 'true'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref || github.event.inputs.branch }}
           fetch-depth: 0
 
       - name: Dependency Review
-        if: github.event_name == 'pull_request'
+        if: steps.codex_available.outputs.enabled == 'true' && github.event_name == 'pull_request'
         id: dependency_review
         uses: actions/dependency-review-action@v4
         with:
@@ -45,6 +60,7 @@ jobs:
           warn-only: true
 
       - name: Fetch open security alerts
+        if: steps.codex_available.outputs.enabled == 'true'
         id: alerts
         env:
           GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
@@ -98,7 +114,7 @@ jobs:
           echo "Found ${DEP_COUNT} open Dependabot alerts and ${CODE_COUNT} open Code Scanning alerts"
 
       - name: Build Codex prompt
-        if: steps.alerts.outputs.count != '0' || github.event_name == 'pull_request'
+        if: steps.codex_available.outputs.enabled == 'true' && (steps.alerts.outputs.count != '0' || github.event_name == 'pull_request')
         run: |
           set -euo pipefail
           cat > codex-prompt.txt <<'PROMPT'
@@ -121,7 +137,7 @@ jobs:
           fi
 
       - name: Run Codex remediation
-        if: steps.alerts.outputs.count != '0' || github.event_name == 'pull_request'
+        if: steps.codex_available.outputs.enabled == 'true' && (steps.alerts.outputs.count != '0' || github.event_name == 'pull_request')
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY || secrets.CODEX_OPENAI_API_KEY }}
@@ -129,7 +145,7 @@ jobs:
           codex-args: '["--full-auto"]'
 
       - name: Commit and push fixes
-        if: (steps.alerts.outputs.count != '0' || github.event_name == 'pull_request')
+        if: steps.codex_available.outputs.enabled == 'true' && (steps.alerts.outputs.count != '0' || github.event_name == 'pull_request')
         env:
           BRANCH: ${{ github.event.pull_request.head.ref || github.event.inputs.branch }}
         run: |
@@ -147,7 +163,7 @@ jobs:
           git push origin "HEAD:${BRANCH}"
 
       - name: Post Codex Review
-        if: github.event_name == 'pull_request'
+        if: steps.codex_available.outputs.enabled == 'true' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
