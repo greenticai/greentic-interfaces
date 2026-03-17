@@ -1,4 +1,4 @@
-﻿name: Dev Publish crates (interfaces)
+name: Dev Publish crates (interfaces)
 
 on:
   push:
