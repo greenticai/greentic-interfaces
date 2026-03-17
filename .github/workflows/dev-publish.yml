@@ -1,9 +1,9 @@
-name: Dev Publish crates (interfaces)
+﻿name: Dev Publish crates (interfaces)
 
 on:
   push:
     branches: [ develop ]
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
