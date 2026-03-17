@@ -1,4 +1,4 @@
-name: Dev Publish crates (interfaces)
+﻿name: Dev Publish crates (interfaces)
 
 on:
   push:
@@ -37,15 +37,12 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
-          override: true
       - uses: Swatinem/rust-cache@v2
 
       - name: Configure AWS Credentials
@@ -85,22 +82,12 @@ index = "sparse+${endpoint}"
 credential-provider = "cargo:token"
 EOF
 
-      - name: Setup GitVersion
-        uses: gittools/actions/gitversion/setup@v4
-        with:
-          versionSpec: "6.x"
-
-      - name: Determine dev version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v4
-        with:
-          configFilePath: GitVersion.yml
-
-      - name: Set dev version for workspace crates
+      - name: Set dev version
         shell: bash
         run: |
           set -euo pipefail
-          dev_version="${{ steps.gitversion.outputs.majorMinorPatch }}-${{ steps.gitversion.outputs.preReleaseTag }}"
+          base_version=$(grep -E '^version\s*=' Cargo.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+          dev_version="${base_version}-dev.${GITHUB_RUN_NUMBER}"
           echo "Using dev version: ${dev_version}"
           sed -i -E "0,/^version = \"[^\"]+\"/s//version = \"${dev_version}\"/" Cargo.toml
 
@@ -115,18 +102,3 @@ EOF
           cargo publish -p greentic-interfaces-wasmtime --registry corp-artifacts-greentic --allow-dirty
           sleep 5
           cargo publish -p greentic-interfaces-host --registry corp-artifacts-greentic --allow-dirty
-
-      - name: Create Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag="v${{ steps.gitversion.outputs.fullSemVer }}"
-          echo "Creating tag ${tag}"
-          if git rev-parse -q --verify "refs/tags/${tag}" >/dev/null; then
-            echo "Tag ${tag} already exists. Skipping."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag "${tag}"
-            git push origin "${tag}"
-          fi
