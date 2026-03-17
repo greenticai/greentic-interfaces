@@ -9,8 +9,25 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  sanity:
+  build-test:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "build-test sanity"
+
+  publish:
+    name: Publish dev crates to CodeArtifact
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build-test
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: aws-actions/configure-aws-credentials@v6
@@ -18,4 +35,4 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - run: echo "sanity with aws action"
+      - run: echo "publish sanity"
