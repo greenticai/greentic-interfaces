@@ -36,8 +36,8 @@ thiserror = "2"
 wasmtime = { version = "42", default-features = false, features = ["component-model", "cranelift", "runtime", "std"] }
 wasmtime-wasi = "42"
 wit-bindgen = { version = "0.53", default-features = false, features = ["macros", "realloc"] }
-wit-bindgen-core = "0.53"
-wit-bindgen-rust = "0.53"
+wit-bindgen-core = "0.54"
+wit-bindgen-rust = "0.54"
 schemars = { version = "1", features = ["derive"] }
 wit-parser = "0.245"
 insta = { version = "1", features = ["json"] }
