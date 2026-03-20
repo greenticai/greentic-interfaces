@@ -40,7 +40,7 @@ Legacy JSON component config guidance (`component@0.5.0`) is tracked in `docs/vi
 
 ### Feature flags for component@0.6.0 + v1 worlds
 
-- `component-v0-6`: enables `greentic:component@0.6.0` (world `component-v0-v6-v0`) guest bindings.
+- `component-v0-6`: enables `greentic:component/component@0.6.0` guest bindings.
 
 - `common-types-v0-1`: enables `greentic:common-types@0.1.0`.
 - `component-v1`: enables `greentic:component-v1@0.1.0` (component-host world) and reexports the component outcome mappers.

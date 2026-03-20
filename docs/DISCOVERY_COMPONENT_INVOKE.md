@@ -2,7 +2,7 @@
 
 ## Invocation contract (component@0.5.0)
 
-Note: `component@0.6.0` replaces the JSON `node.invoke` surface with the CBOR-based `component-runtime.run` world (`component-v0-v6-v0`). The 0.6.0 flow also uses descriptor/schema/qa/i18n exports instead of the legacy JSON manifest.
+Note: `component@0.6.0` replaces the legacy JSON `node.invoke` flow with the canonical CBOR-first `greentic:component/component@0.6.0` world. The 0.6.0 flow also uses descriptor/schema/qa/i18n exports instead of the legacy JSON manifest.
 
 Components implement `node.invoke(ctx, op, input)` as defined in `greentic:component@0.5.0`. `ctx` is an `exec-ctx` with a `tenant` identity, `flow-id`, and optional `node-id` providing the host with tenant scoping, correlation, and tracing metadata. `op` is a host-defined string that selects which capability the component should execute, and `input` is a JSON payload encoded as UTF-8. Every call returns an `invoke-result` (either `ok(json)` or `err(node-error)`) so the host can surface component responses or failures in a uniform way.
 

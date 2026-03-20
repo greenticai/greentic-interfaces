@@ -9,7 +9,7 @@ compile_error!("greentic-interfaces-host is intended for native host targets.");
 
 pub use greentic_interfaces::{bindings, mappers, validate};
 
-/// Host bindings for `greentic:component/component@0.6.0` (world `component-v0-v6-v0`).
+/// Host bindings for `greentic:component/component@0.6.0`.
 pub mod component_v0_6 {
     pub use greentic_interfaces::component_v0_6::*;
 

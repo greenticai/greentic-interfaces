@@ -1,0 +1,17 @@
+[package]
+name = "component-v060-canonical-dummy"
+version.workspace = true
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "greentic:component"
+
+[package.metadata.component.target]
+world = "greentic:component/component@0.6.0"
+
+[dependencies]
+greentic-interfaces-guest = { workspace = true, default-features = false, features = ["component-v0-6"] }

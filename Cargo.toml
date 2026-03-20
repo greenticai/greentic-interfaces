@@ -4,6 +4,7 @@ members = [
     "crates/greentic-interfaces-wasmtime",
     "crates/greentic-interfaces-host",
     "crates/greentic-interfaces-guest",
+    "guest-tests/component-v060-canonical-dummy",
     "guest-tests/repo-ui-actions-dummy",
     "guest-tests/distributor-api-dummy",
     "guest-tests/oauth-broker-client-harness",
@@ -19,7 +20,7 @@ resolver = "2"
 license = "MIT"
 edition = "2024"
 authors = ["Greentic.ai"]
-version = "0.4.109"
+version = "0.4.110"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
@@ -35,9 +36,9 @@ time = "0.3"
 thiserror = "2"
 wasmtime = { version = "42", default-features = false, features = ["component-model", "cranelift", "runtime", "std"] }
 wasmtime-wasi = "42"
-wit-bindgen = { version = "0.53", default-features = false, features = ["macros", "realloc"] }
-wit-bindgen-core = "0.53"
-wit-bindgen-rust = "0.53"
+wit-bindgen = { version = "0.54", default-features = false, features = ["macros", "realloc"] }
+wit-bindgen-core = "0.54"
+wit-bindgen-rust = "0.54"
 schemars = { version = "1", features = ["derive"] }
 wit-parser = "0.245"
 insta = { version = "1", features = ["json"] }

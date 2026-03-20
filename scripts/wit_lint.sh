@@ -5,7 +5,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL="${ROOT}/wit/greentic"
 
 if [[ ! -d "${CANONICAL}" ]]; then
-  mapfile -t any06 < <(find "${ROOT}/wit" -path '*@0.6.0*' -print 2>/dev/null || true)
+  any06=()
+  while IFS= read -r path; do
+    [[ -n "${path}" ]] || continue
+    any06+=("${path}")
+  done < <(find "${ROOT}/wit" -path '*@0.6.0*' -print 2>/dev/null || true)
   if [[ ${#any06[@]} -gt 0 ]]; then
     echo "[err] @0.6.0 content exists but canonical tree missing (${CANONICAL})"
     exit 1
@@ -32,25 +36,29 @@ while IFS= read -r deps_dir; do
   fail "Found deps snapshot: ${deps_dir}"
 done < <(find "${CANONICAL}" -type d -name deps)
 
-# Record ownership: record -> owner glob (relative to canonical tree).
-declare -A OWNERS=(
-  ["tenant-ctx"]="*/types-core@0.6.0/*"
-  ["host-error"]="*/types-core@0.6.0/*"
-  ["node-error"]="*/types-core@0.6.0/*"
-  ["capability"]="*/types-core@0.6.0/*"
-  ["capability-requirement"]="*/types-core@0.6.0/*"
-
-  ["invocation-envelope"]="*/component@0.6.0/*"
-  ["invocation-result"]="*/component@0.6.0/*"
-  ["component-descriptor"]="*/component@0.6.0/*"
-  ["schema-ref"]="*/component@0.6.0/*"
+# Record ownership: "record|owner glob" (relative to canonical tree).
+OWNERS=(
+  "tenant-ctx|*/types-core@0.6.0/*"
+  "host-error|*/types-core@0.6.0/*"
+  "node-error|*/types-core@0.6.0/*"
+  "capability|*/types-core@0.6.0/*"
+  "capability-requirement|*/types-core@0.6.0/*"
+  "invocation-envelope|*/component@0.6.0/*"
+  "invocation-result|*/component@0.6.0/*"
+  "component-descriptor|*/component@0.6.0/*"
+  "schema-ref|*/component@0.6.0/*"
 )
 
-for rec in "${!OWNERS[@]}"; do
-  owner_glob="${OWNERS[$rec]}"
+for entry in "${OWNERS[@]}"; do
+  rec="${entry%%|*}"
+  owner_glob="${entry#*|}"
   owner_path_glob="${CANONICAL}/${owner_glob}"
 
-  mapfile -t defs < <(rg -l --glob "*@0.6.0*" "record ${rec}" "${CANONICAL}" || true)
+  defs=()
+  while IFS= read -r def; do
+    [[ -n "${def}" ]] || continue
+    defs+=("${def}")
+  done < <(rg -l --glob "*@0.6.0*" "record ${rec}" "${CANONICAL}" || true)
   if [[ ${#defs[@]} -eq 0 ]]; then
     continue
   fi
@@ -71,7 +79,11 @@ done
 
 # No stray @0.6.0 packages outside canonical tree under the canonical wit root.
 # Crate-local mirrors may exist for packaging and are validated separately.
-mapfile -t extra < <(find "${ROOT}/wit" -path '*@0.6.0/package.wit' -print || true)
+extra=()
+while IFS= read -r file; do
+  [[ -n "${file}" ]] || continue
+  extra+=("${file}")
+done < <(find "${ROOT}/wit" -path '*@0.6.0/package.wit' -print || true)
 for file in "${extra[@]}"; do
   [[ -z "${file}" ]] && continue
   if [[ "${file}" != ${CANONICAL}/* ]]; then
