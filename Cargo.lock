@@ -852,9 +852,9 @@ dependencies = [
 
 [[package]]
 name = "greentic-types"
-version = "0.4.55"
+version = "0.4.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec967ebd301975cb738490d9d8267ef4064c7aff9dbdf5bfad8aaf0203cdfd9e"
+checksum = "705f50d24a284d23e88d4166c9ecb9177adf555947513cd5f79a534a55813cab"
 dependencies = [
  "anyhow",
  "blake3",
@@ -1121,9 +1121,9 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "1.0.17"
+version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92ecc6618181def0457392ccd0ee51198e065e016d1d527a7ac1b6dc7c1f09d2"
+checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "js-sys"
