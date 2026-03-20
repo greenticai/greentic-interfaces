@@ -112,6 +112,10 @@ jobs:
           wasm-tools component wit crates/greentic-interfaces/wit | head -n 5
       - name: Build guest (default features; legacy providers off)
         run: cargo build --manifest-path crates/greentic-interfaces-guest/Cargo.toml --target wasm32-wasip2
+      - name: Verify packageability for greentic-interfaces-guest
+        run: cargo package --no-verify -p greentic-interfaces-guest
+      - name: Guest packaged consumer smoke
+        run: cargo test -p greentic-interfaces-guest --test packaged_component_v060_smoke --no-default-features --features component-v0-6 -- --nocapture
       - name: Prune wasm artifacts to save space
         run: rm -rf target/wasm32-wasip2
       - name: Verify packageability for greentic-interfaces-wasmtime

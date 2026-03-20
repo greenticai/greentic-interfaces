@@ -8,53 +8,57 @@ use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[test]
-fn prefers_exact_versioned_sibling_wit_root() {
-    let unique = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("time went backwards")
-        .as_nanos();
-    let root = std::env::temp_dir().join(format!("gi-guest-wit-paths-{unique}"));
+fn prefers_bundled_wit_root_over_workspace_paths() {
+    let root = temp_root("bundled-preferred");
+    let manifest_dir = root.join("crate");
+    let bundled = manifest_dir.join("wit");
+    let workspace = root.join("wit");
 
-    fs::create_dir_all(&root).expect("create temp root");
-    let old = root.join("greentic-interfaces-0.4.88/wit");
-    let exact = root.join("greentic-interfaces-0.4.96/wit");
-    let manifest_dir = root.join("greentic-interfaces-guest-0.4.96");
+    fs::create_dir_all(bundled.join("greentic/component@0.6.0")).expect("create bundled wit");
+    fs::create_dir_all(workspace.join("greentic/component@0.6.0")).expect("create workspace wit");
+    fs::write(
+        bundled.join("greentic/component@0.6.0/package.wit"),
+        "package greentic:component@0.6.0;\n",
+    )
+    .expect("write bundled wit");
+    fs::write(
+        workspace.join("greentic/component@0.6.0/package.wit"),
+        "package greentic:component@0.6.0;\n",
+    )
+    .expect("write workspace wit");
 
-    fs::create_dir_all(&old).expect("create old sibling wit");
-    fs::create_dir_all(&exact).expect("create exact sibling wit");
-    fs::create_dir_all(&manifest_dir).expect("create guest manifest dir");
-
-    let selected = wit_paths::crates_io_sibling_wit_root(&manifest_dir, "0.4.96")
-        .expect("expected a sibling wit root");
-
-    let expected = fs::canonicalize(PathBuf::from(&exact)).expect("canonical exact path");
+    let selected = wit_paths::canonical_wit_root_from(&manifest_dir);
+    let expected = fs::canonicalize(PathBuf::from(&bundled)).expect("canonical bundled path");
     assert_eq!(selected, expected);
 
     let _ = fs::remove_dir_all(&root);
 }
 
 #[test]
-fn prefers_exact_versioned_candidate_even_when_listed_later() {
+fn falls_back_to_workspace_wit_when_bundle_is_absent() {
+    let root = temp_root("workspace-fallback");
+    let manifest_dir = root.join("crates/greentic-interfaces-guest");
+    let workspace = root.join("wit");
+
+    fs::create_dir_all(workspace.join("greentic/component@0.6.0")).expect("create workspace wit");
+    fs::create_dir_all(&manifest_dir).expect("create manifest dir");
+    fs::write(
+        workspace.join("greentic/component@0.6.0/package.wit"),
+        "package greentic:component@0.6.0;\n",
+    )
+    .expect("write workspace wit");
+
+    let selected = wit_paths::canonical_wit_root_from(&manifest_dir);
+    let expected = fs::canonicalize(PathBuf::from(&workspace)).expect("canonical workspace path");
+    assert_eq!(selected, expected);
+
+    let _ = fs::remove_dir_all(&root);
+}
+
+fn temp_root(label: &str) -> PathBuf {
     let unique = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .expect("time went backwards")
         .as_nanos();
-    let root = std::env::temp_dir().join(format!("gi-guest-wit-select-{unique}"));
-
-    let old = root.join("greentic-interfaces-0.4.88/wit");
-    let exact = root.join("greentic-interfaces-0.4.96/wit");
-    fs::create_dir_all(&old).expect("create old sibling wit");
-    fs::create_dir_all(&exact).expect("create exact sibling wit");
-
-    let selected = wit_paths::choose_sibling_wit_root(
-        vec![old, exact.clone()],
-        "greentic-interfaces-",
-        "0.4.96",
-    )
-    .expect("expected selected candidate");
-
-    let expected = fs::canonicalize(PathBuf::from(&exact)).expect("canonical exact path");
-    assert_eq!(selected, expected);
-
-    let _ = fs::remove_dir_all(&root);
+    std::env::temp_dir().join(format!("gi-guest-wit-paths-{label}-{unique}"))
 }

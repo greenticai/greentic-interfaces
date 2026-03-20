@@ -211,16 +211,53 @@ fn component_v0_v6_exports_node_interface() {
 #[test]
 fn no_legacy_component_v0_v6_wit_mirrors_exist() {
     let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let canonical = manifest_dir.join("wit/greentic/component@0.6.0/package.wit");
     let guest =
         manifest_dir.join("../greentic-interfaces-guest/wit/greentic/component@0.6.0/package.wit");
     let wasmtime = manifest_dir
         .join("../greentic-interfaces-wasmtime/wit/greentic/component@0.6.0/package.wit");
 
     assert!(
-        !guest.exists(),
-        "legacy guest mirror should not exist at {}",
-        guest.display()
+        canonical.exists(),
+        "canonical component@0.6.0 package missing at {}",
+        canonical.display()
     );
+
+    let canonical_contents = std::fs::read_to_string(&canonical)
+        .unwrap_or_else(|_| panic!("failed to read {}", canonical.display()));
+
+    if guest.exists() {
+        let guest_contents = std::fs::read_to_string(&guest)
+            .unwrap_or_else(|_| panic!("failed to read {}", guest.display()));
+        assert_eq!(
+            guest_contents,
+            canonical_contents,
+            "guest-local component@0.6.0 package must match canonical WIT at {}",
+            guest.display()
+        );
+        assert!(
+            !guest_contents.contains("component-v0-v6-v0"),
+            "guest-local component@0.6.0 package must not contain legacy alias markers at {}",
+            guest.display()
+        );
+    }
+
+    if wasmtime.exists() {
+        let wasmtime_contents = std::fs::read_to_string(&wasmtime)
+            .unwrap_or_else(|_| panic!("failed to read {}", wasmtime.display()));
+        assert_eq!(
+            wasmtime_contents,
+            canonical_contents,
+            "wasmtime-local component@0.6.0 package must match canonical WIT at {}",
+            wasmtime.display()
+        );
+        assert!(
+            !wasmtime_contents.contains("component-v0-v6-v0"),
+            "wasmtime-local component@0.6.0 package must not contain legacy alias markers at {}",
+            wasmtime.display()
+        );
+    }
+
     assert!(
         !wasmtime.exists(),
         "legacy wasmtime mirror should not exist at {}",
