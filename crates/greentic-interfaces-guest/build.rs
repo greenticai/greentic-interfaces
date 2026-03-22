@@ -370,6 +370,16 @@ const WORLD_FEATURES: &[WorldFeature] = &[
         feature: "component-v0-6",
     },
     WorldFeature {
+        package: "greentic:component@0.6.0",
+        world: "component-qa-support",
+        feature: "component-v0-6",
+    },
+    WorldFeature {
+        package: "greentic:component@0.6.0",
+        world: "component-i18n-support",
+        feature: "component-v0-6",
+    },
+    WorldFeature {
         package: "greentic:component@0.4.0",
         world: "component",
         feature: "component-node-v0-4",

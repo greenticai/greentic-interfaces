@@ -39,6 +39,16 @@ fn component_v060_artifact_uses_canonical_world_identity() {
         wasm_path.display()
     );
     assert!(
+        contains_bytes(&wasm, b"greentic:component/component-qa@0.6.0"),
+        "expected canonical component-qa export identity in {}",
+        wasm_path.display()
+    );
+    assert!(
+        contains_bytes(&wasm, b"greentic:component/component-i18n@0.6.0"),
+        "expected canonical component-i18n export identity in {}",
+        wasm_path.display()
+    );
+    assert!(
         !contains_bytes(&wasm, b"component-v0-v6-v0"),
         "unexpected internal world alias leaked into {}",
         wasm_path.display()
@@ -48,6 +58,16 @@ fn component_v060_artifact_uses_canonical_world_identity() {
         assert!(
             decoded.contains("export greentic:component/node@0.6.0;"),
             "expected canonical node export in decoded WIT for {}",
+            wasm_path.display()
+        );
+        assert!(
+            decoded.contains("export greentic:component/component-qa@0.6.0;"),
+            "expected canonical component-qa export in decoded WIT for {}",
+            wasm_path.display()
+        );
+        assert!(
+            decoded.contains("export greentic:component/component-i18n@0.6.0;"),
+            "expected canonical component-i18n export in decoded WIT for {}",
             wasm_path.display()
         );
         assert!(

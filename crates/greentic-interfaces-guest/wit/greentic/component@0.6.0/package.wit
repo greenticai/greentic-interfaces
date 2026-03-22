@@ -98,7 +98,31 @@ interface node {
   invoke: func(op: string, envelope: invocation-envelope) -> result<invocation-result, node-error>;
 }
 
+interface component-qa {
+  enum qa-mode {
+    default,
+    setup,
+    update,
+    remove,
+  }
+
+  qa-spec: func(mode: qa-mode) -> list<u8>;
+  apply-answers: func(mode: qa-mode, current-config: list<u8>, answers: list<u8>) -> list<u8>;
+}
+
+interface component-i18n {
+  i18n-keys: func() -> list<string>;
+}
+
 world component {
   import control;
   export node;
+}
+
+world component-qa-support {
+  export component-qa;
+}
+
+world component-i18n-support {
+  export component-i18n;
 }

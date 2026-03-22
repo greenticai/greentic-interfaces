@@ -25,12 +25,14 @@ pub mod component {
     pub use crate::bindings::greentic_component_0_5_0_component::exports::greentic::component::*;
 }
 
-/// Component exports for `greentic:component/component@0.6.0` (world `component`).
+/// Component exports for `greentic:component/component@0.6.0` plus the
+/// canonical `component-qa` and `component-i18n` guest exports.
 ///
 /// Enable feature `component-v0-6` and export your implementation:
 ///
 /// ```rust
 /// # use greentic_interfaces_guest::component_v0_6::node;
+/// # use greentic_interfaces_guest::component_v0_6::{component_i18n, component_qa};
 /// # struct MyImpl;
 /// # impl node::Guest for MyImpl {
 /// #     fn describe() -> node::ComponentDescriptor {
@@ -52,40 +54,161 @@ pub mod component {
 /// #         })
 /// #     }
 /// # }
-/// greentic_interfaces_guest::export_component_v060!(MyImpl);
+/// # impl component_qa::Guest for MyImpl {
+/// #     fn qa_spec(_mode: component_qa::QaMode) -> Vec<u8> {
+/// #         vec![]
+/// #     }
+/// #     fn apply_answers(
+/// #         _mode: component_qa::QaMode,
+/// #         _current_config: Vec<u8>,
+/// #         _answers: Vec<u8>,
+/// #     ) -> Vec<u8> {
+/// #         vec![]
+/// #     }
+/// # }
+/// # impl component_i18n::Guest for MyImpl {
+/// #     fn i18n_keys() -> Vec<String> {
+/// #         vec!["demo.title".into()]
+/// #     }
+/// # }
+/// greentic_interfaces_guest::export_component_v060!(
+///     MyImpl,
+///     component_qa: MyImpl,
+///     component_i18n: MyImpl,
+/// );
 /// ```
 #[cfg(feature = "component-v0-6")]
 pub mod component_v0_6 {
     pub use crate::bindings::greentic_component_0_6_0_component::exports::greentic::component::*;
+    pub use crate::bindings::greentic_component_0_6_0_component_i18n_support::exports::greentic::component::component_i18n;
+    pub use crate::bindings::greentic_component_0_6_0_component_qa_support::exports::greentic::component::component_qa;
 }
 
-/// Exports a `greentic:component/node@0.6.0` guest implementation.
+/// Exports a `greentic:component/node@0.6.0` guest implementation, and can
+/// optionally also export `greentic:component/component-qa@0.6.0` and
+/// `greentic:component/component-i18n@0.6.0` from crate-owned canonical
+/// bindings.
+///
+/// `export_component_v060!(MyNode)` preserves the existing node-only behavior.
+/// To add the optional exports without local WIT files:
+///
+/// ```rust
+/// # use greentic_interfaces_guest::component_v0_6::{component_i18n, component_qa, node};
+/// # struct Component;
+/// # impl node::Guest for Component {
+/// #     fn describe() -> node::ComponentDescriptor {
+/// #         node::ComponentDescriptor {
+/// #             name: "demo".into(),
+/// #             version: "0.1.0".into(),
+/// #             summary: None,
+/// #             capabilities: vec![],
+/// #             ops: vec![],
+/// #             schemas: vec![],
+/// #             setup: None,
+/// #         }
+/// #     }
+/// #     fn invoke(
+/// #         _op: String,
+/// #         _envelope: node::InvocationEnvelope,
+/// #     ) -> Result<node::InvocationResult, node::NodeError> {
+/// #         Ok(node::InvocationResult {
+/// #             ok: true,
+/// #             output_cbor: vec![],
+/// #             output_metadata_cbor: None,
+/// #         })
+/// #     }
+/// # }
+/// # impl component_qa::Guest for Component {
+/// #     fn qa_spec(_mode: component_qa::QaMode) -> Vec<u8> { vec![] }
+/// #     fn apply_answers(
+/// #         _mode: component_qa::QaMode,
+/// #         _current_config: Vec<u8>,
+/// #         _answers: Vec<u8>,
+/// #     ) -> Vec<u8> { vec![] }
+/// # }
+/// # impl component_i18n::Guest for Component {
+/// #     fn i18n_keys() -> Vec<String> { vec![] }
+/// # }
+/// greentic_interfaces_guest::export_component_v060!(
+///     Component,
+///     component_qa: Component,
+///     component_i18n: Component,
+/// );
+/// ```
 #[cfg(feature = "component-v0-6")]
 #[macro_export]
 macro_rules! export_component_v060 {
-    ($ty:ty) => {
+    ($node_ty:ty $(, component_qa: $qa_ty:ty)? $(, component_i18n: $i18n_ty:ty)? $(,)?) => {
         const _: () = {
             use $crate::bindings::greentic_component_0_6_0_component::exports::greentic::component::node;
 
             #[unsafe(export_name = "greentic:component/node@0.6.0#describe")]
             unsafe extern "C" fn export_component_v060_describe() -> *mut u8 {
-                unsafe { node::_export_describe_cabi::<$ty>() }
+                unsafe { node::_export_describe_cabi::<$node_ty>() }
             }
 
             #[unsafe(export_name = "cabi_post_greentic:component/node@0.6.0#describe")]
             unsafe extern "C" fn export_component_v060_post_describe(arg0: *mut u8) {
-                unsafe { node::__post_return_describe::<$ty>(arg0) }
+                unsafe { node::__post_return_describe::<$node_ty>(arg0) }
             }
 
             #[unsafe(export_name = "greentic:component/node@0.6.0#invoke")]
             unsafe extern "C" fn export_component_v060_invoke(arg0: *mut u8) -> *mut u8 {
-                unsafe { node::_export_invoke_cabi::<$ty>(arg0) }
+                unsafe { node::_export_invoke_cabi::<$node_ty>(arg0) }
             }
 
             #[unsafe(export_name = "cabi_post_greentic:component/node@0.6.0#invoke")]
             unsafe extern "C" fn export_component_v060_post_invoke(arg0: *mut u8) {
-                unsafe { node::__post_return_invoke::<$ty>(arg0) }
+                unsafe { node::__post_return_invoke::<$node_ty>(arg0) }
             }
+
+            $(
+                use $crate::bindings::greentic_component_0_6_0_component_qa_support::exports::greentic::component::component_qa;
+
+                #[unsafe(export_name = "greentic:component/component-qa@0.6.0#qa-spec")]
+                unsafe extern "C" fn export_component_v060_qa_spec(arg0: i32) -> *mut u8 {
+                    unsafe { component_qa::_export_qa_spec_cabi::<$qa_ty>(arg0) }
+                }
+
+                #[unsafe(export_name = "cabi_post_greentic:component/component-qa@0.6.0#qa-spec")]
+                unsafe extern "C" fn export_component_v060_post_qa_spec(arg0: *mut u8) {
+                    unsafe { component_qa::__post_return_qa_spec::<$qa_ty>(arg0) }
+                }
+
+                #[unsafe(export_name = "greentic:component/component-qa@0.6.0#apply-answers")]
+                unsafe extern "C" fn export_component_v060_apply_answers(
+                    arg0: i32,
+                    arg1: *mut u8,
+                    arg2: usize,
+                    arg3: *mut u8,
+                    arg4: usize,
+                ) -> *mut u8 {
+                    unsafe {
+                        component_qa::_export_apply_answers_cabi::<$qa_ty>(
+                            arg0, arg1, arg2, arg3, arg4,
+                        )
+                    }
+                }
+
+                #[unsafe(export_name = "cabi_post_greentic:component/component-qa@0.6.0#apply-answers")]
+                unsafe extern "C" fn export_component_v060_post_apply_answers(arg0: *mut u8) {
+                    unsafe { component_qa::__post_return_apply_answers::<$qa_ty>(arg0) }
+                }
+            )?
+
+            $(
+                use $crate::bindings::greentic_component_0_6_0_component_i18n_support::exports::greentic::component::component_i18n;
+
+                #[unsafe(export_name = "greentic:component/component-i18n@0.6.0#i18n-keys")]
+                unsafe extern "C" fn export_component_v060_i18n_keys() -> *mut u8 {
+                    unsafe { component_i18n::_export_i18n_keys_cabi::<$i18n_ty>() }
+                }
+
+                #[unsafe(export_name = "cabi_post_greentic:component/component-i18n@0.6.0#i18n-keys")]
+                unsafe extern "C" fn export_component_v060_post_i18n_keys(arg0: *mut u8) {
+                    unsafe { component_i18n::__post_return_i18n_keys::<$i18n_ty>(arg0) }
+                }
+            )?
         };
     };
 }

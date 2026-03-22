@@ -128,6 +128,7 @@ fn main() {
             let package_rel_path = format!("{}/{}", staged_root, staged_name);
 
             let has_control_helpers = dirname.starts_with("component@")
+                && world_name == "component"
                 && content.contains("interface control")
                 && content.contains("import control");
 
