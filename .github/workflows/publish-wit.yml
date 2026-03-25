@@ -6,6 +6,9 @@ on:
     tags: ["wit-v*"]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   setup-toolchain:
     runs-on: ubuntu-latest
