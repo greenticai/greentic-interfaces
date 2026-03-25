@@ -1,6 +1,6 @@
 # Security Fix Report
 
-Date: 2026-03-23 (UTC)
+Date: 2026-03-25 (UTC)
 Role: CI Security Reviewer
 
 ## Inputs Reviewed
@@ -10,20 +10,27 @@ Role: CI Security Reviewer
 - New PR dependency vulnerabilities: `[]`
 
 ## Repository Checks Performed
-1. Inspected dependency manifests/lockfiles in repository (Rust `Cargo.toml`/`Cargo.lock` files).
-2. Checked working diff for PR-introduced file changes.
-3. Verified whether any dependency files were modified in this checkout.
+1. Verified repository alert artifacts:
+   - `security-alerts.json`
+   - `dependabot-alerts.json`
+   - `code-scanning-alerts.json`
+   - `pr-vulnerable-changes.json`
+2. Enumerated dependency lockfiles/manifests present in repo:
+   - `Cargo.lock`
+   - `examples/runner-host-smoke/Cargo.lock`
+   - `examples/component-describe/Cargo.lock`
+3. Reviewed working tree status for unexpected dependency-file modifications.
 
 ## Findings
 - No Dependabot alerts were provided.
 - No code scanning alerts were provided.
 - No new PR dependency vulnerabilities were provided.
-- No dependency manifest or lockfile changes are present in the local diff.
+- No actionable dependency vulnerability was identified from provided CI inputs.
 
 ## Remediation Actions
-- No vulnerability fixes were required.
-- No dependency upgrades or code changes were applied.
+- No code or dependency changes were required.
+- No vulnerability patches were applied because there were no reported vulnerabilities to remediate.
 
-## Notes
-- Attempted to run `cargo audit --version`, but the CI sandbox blocked rustup temp-file creation under `/home/runner/.rustup` (read-only), so dynamic audit tooling could not be executed in this environment.
-- Based on provided alert inputs and repository diff inspection, there are no actionable security remediations for this PR.
+## Outcome
+- Security review completed.
+- Repository remains unchanged for security remediation scope (report-only update).
