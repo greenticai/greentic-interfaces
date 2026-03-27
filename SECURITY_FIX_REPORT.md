@@ -1,6 +1,6 @@
 # Security Fix Report
 
-Date: 2026-03-26 (UTC)  
+Date: 2026-03-27 (UTC)  
 Reviewer: Security Reviewer (CI)
 
 ## Inputs Reviewed
@@ -8,8 +8,8 @@ Reviewer: Security Reviewer (CI)
 - New PR dependency vulnerabilities: `[]`
 
 ## PR Dependency Review
-- Compared this branch against `origin/main` for dependency file changes.
-- Result: no dependency manifest or lockfile changes detected in the PR diff.
+- Checked PR diff against `origin/main...HEAD` for dependency manifest and lockfile changes.
+- Result: no dependency file changes detected in the PR diff.
 
 Files checked pattern:
 - `Cargo.toml`, `Cargo.lock`
