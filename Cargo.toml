@@ -19,32 +19,84 @@ resolver = "2"
 [workspace.package]
 license = "MIT"
 edition = "2024"
-authors = ["Greentic.ai"]
+authors = [
+    "Greentic.ai",
+]
 version = "0.4.112"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
 anyhow = "1"
-greentic-interfaces = { path = "crates/greentic-interfaces", version = "0.4", default-features = false }
-greentic-interfaces-wasmtime = { path = "crates/greentic-interfaces-wasmtime", version = "0.4", default-features = false }
-greentic-interfaces-guest = { path = "crates/greentic-interfaces-guest", version = "0.4", default-features = false }
-greentic-types = { version = "0.4"}
-serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 semver = "1"
 time = "0.3"
 thiserror = "2"
-wasmtime = { version = "43", default-features = false, features = ["component-model", "cranelift", "runtime", "std"] }
 wasmtime-wasi = "43"
-wit-bindgen = { version = "0.54", default-features = false, features = ["macros", "realloc"] }
 wit-bindgen-core = "0.54"
 wit-bindgen-rust = "0.54"
-schemars = { version = "1", features = ["derive"] }
 wit-parser = "0.245"
-insta = { version = "1", features = ["json"] }
 camino = "1"
 proc-macro2 = "1"
 quote = "1"
-syn = { version = "2", features = ["full"] }
 walkdir = "2"
 wat = "1"
+
+[workspace.dependencies.greentic-interfaces]
+path = "crates/greentic-interfaces"
+version = ">=0.4.0-0, <0.5.0-0"
+default-features = false
+
+[workspace.dependencies.greentic-interfaces-wasmtime]
+path = "crates/greentic-interfaces-wasmtime"
+version = ">=0.4.0-0, <0.5.0-0"
+default-features = false
+
+[workspace.dependencies.greentic-interfaces-guest]
+path = "crates/greentic-interfaces-guest"
+version = ">=0.4.0-0, <0.5.0-0"
+default-features = false
+
+[workspace.dependencies.greentic-types]
+version = ">=0.4.0-0, <0.5.0-0"
+
+[workspace.dependencies.serde]
+version = "1"
+features = [
+    "derive",
+]
+
+[workspace.dependencies.wasmtime]
+version = "43"
+default-features = false
+features = [
+    "component-model",
+    "cranelift",
+    "runtime",
+    "std",
+]
+
+[workspace.dependencies.wit-bindgen]
+version = "0.54"
+default-features = false
+features = [
+    "macros",
+    "realloc",
+]
+
+[workspace.dependencies.schemars]
+version = "1"
+features = [
+    "derive",
+]
+
+[workspace.dependencies.insta]
+version = "1"
+features = [
+    "json",
+]
+
+[workspace.dependencies.syn]
+version = "2"
+features = [
+    "full",
+]
