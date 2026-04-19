@@ -90,7 +90,6 @@ Add a top-level `setup: option<setup_contract>` field in the descriptor when the
 
 ## Migration notes
 
-- `component@0.5.0` uses JSON-string payloads and does not have the `ops` metadata.
-- `component@0.6.0` uses CBOR payloads (`greentic:component@0.6.0` capacity) and expects `descriptor.ops`. Hosts may support both versions during transition; use the descriptor to discover which version a component exposes.
+- `component@0.6.0` uses CBOR payloads and expects `descriptor.ops`.
 - In `component@0.6.0` QA mode enums, the legacy value `upgrade` was renamed to `update`.
 - `setup` is optional and ignored if a host does not understand it; unknown fields are safe to skip. Hosts default `i18n_id` when the component omits it.

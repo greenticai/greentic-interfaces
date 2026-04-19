@@ -5,8 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-wit-bindgen = { version = "0.51", default-features = false, features = ["macros"] }
-wit-bindgen-rt = "0.44"
+wit-bindgen = { workspace = true, default-features = false, features = ["macros"] }
 
 [package.metadata.component]
 package = "greentic:repo-ui-actions"

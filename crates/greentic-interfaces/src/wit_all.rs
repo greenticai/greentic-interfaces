@@ -51,72 +51,6 @@ declare_world!(
     }
 );
 
-#[cfg(feature = "component-v0-5")]
-declare_world!(
-    mod component_v0_5,
-    path = "bundled-wit/greentic-component-0.5.0",
-    world = "greentic:component/component@0.5.0",
-    legacy = {
-        use anyhow::Result as AnyResult;
-        use wasmtime::component::{Component as WasmtimeComponent, Linker};
-        use wasmtime::StoreContextMut;
-
-        pub use generated::greentic::component::control::Host as ControlHost;
-
-        /// Registers the Greentic control interface with the provided linker.
-        pub fn add_control_to_linker<T>(
-            linker: &mut Linker<T>,
-            get_host: impl Fn(&mut T) -> &mut (dyn ControlHost + Send + Sync + 'static)
-                + Send
-                + Sync
-                + Copy
-                + 'static,
-        ) -> wasmtime::Result<()>
-        where
-            T: Send + 'static,
-        {
-            let mut inst = linker.instance("greentic:component/control@0.5.0")?;
-
-            inst.func_wrap(
-                "should-cancel",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    let result = host.should_cancel();
-                    Ok((result,))
-                },
-            )?;
-
-            inst.func_wrap(
-                "yield-now",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    host.yield_now();
-                    Ok(())
-                },
-            )?;
-
-            Ok(())
-        }
-
-        /// Back-compat shim for instantiating the component.
-        pub struct Component;
-
-        impl Component {
-            /// Loads the component from raw bytes, mirroring the old helper.
-            pub fn instantiate(
-                engine: &wasmtime::Engine,
-                component_wasm: &[u8],
-            ) -> AnyResult<WasmtimeComponent> {
-                WasmtimeComponent::from_binary(engine, component_wasm)
-                    .map_err(|err| anyhow::anyhow!("{err}"))
-            }
-        }
-
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:component@0.5.0";
-    }
-);
-
 #[cfg(feature = "component-v0-6")]
 declare_world!(
     mod component_v0_6,
@@ -128,72 +62,6 @@ declare_world!(
     }
 );
 
-#[cfg(feature = "component-v0-5")]
-declare_world!(
-    mod component_configurable_v0_5,
-    path = "bundled-wit/greentic-component-0.5.0",
-    world = "greentic:component/component-configurable@0.5.0",
-    legacy = {
-        use anyhow::Result as AnyResult;
-        use wasmtime::component::{Component as WasmtimeComponent, Linker};
-        use wasmtime::StoreContextMut;
-
-        pub use generated::greentic::component::control::Host as ControlHost;
-
-        /// Registers the Greentic control interface with the provided linker.
-        pub fn add_control_to_linker<T>(
-            linker: &mut Linker<T>,
-            get_host: impl Fn(&mut T) -> &mut (dyn ControlHost + Send + Sync + 'static)
-                + Send
-                + Sync
-                + Copy
-                + 'static,
-        ) -> wasmtime::Result<()>
-        where
-            T: Send + 'static,
-        {
-            let mut inst = linker.instance("greentic:component/control@0.5.0")?;
-
-            inst.func_wrap(
-                "should-cancel",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    let result = host.should_cancel();
-                    Ok((result,))
-                },
-            )?;
-
-            inst.func_wrap(
-                "yield-now",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    host.yield_now();
-                    Ok(())
-                },
-            )?;
-
-            Ok(())
-        }
-
-        /// Back-compat shim for instantiating the component.
-        pub struct Component;
-
-        impl Component {
-            /// Loads the component from raw bytes, mirroring the old helper.
-            pub fn instantiate(
-                engine: &wasmtime::Engine,
-                component_wasm: &[u8],
-            ) -> AnyResult<WasmtimeComponent> {
-                WasmtimeComponent::from_binary(engine, component_wasm)
-                    .map_err(|err| anyhow::anyhow!("{err}"))
-            }
-        }
-
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:component@0.5.0";
-    }
-);
-
 #[cfg(feature = "common-types-v0-1")]
 declare_world!(
     mod common_types_v0_1,
@@ -202,83 +70,6 @@ declare_world!(
     legacy = {
         /// Canonical package identifier.
         pub const PACKAGE_ID: &str = "greentic:common-types@0.1.0";
-    }
-);
-
-#[cfg(feature = "component-v0-4")]
-declare_world!(
-    mod component_v0_4,
-    path = "bundled-wit/greentic-component-0.4.0",
-    world = "greentic:component/component@0.4.0",
-    legacy = {
-        use anyhow::Result as AnyResult;
-        use wasmtime::component::{Component as WasmtimeComponent, Linker};
-        use wasmtime::StoreContextMut;
-
-        pub use generated::greentic::component::control::Host as ControlHost;
-
-        /// Registers the Greentic control interface with the provided linker.
-        pub fn add_control_to_linker<T>(
-            linker: &mut Linker<T>,
-            get_host: impl Fn(&mut T) -> &mut (dyn ControlHost + Send + Sync + 'static)
-                + Send
-                + Sync
-                + Copy
-                + 'static,
-        ) -> wasmtime::Result<()>
-        where
-            T: Send + 'static,
-        {
-            let mut inst = linker.instance("greentic:component/control@0.4.0")?;
-
-            inst.func_wrap(
-                "should-cancel",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    let result = host.should_cancel();
-                    Ok((result,))
-                },
-            )?;
-
-            inst.func_wrap(
-                "yield-now",
-                move |mut caller: StoreContextMut<'_, T>, (): ()| {
-                    let host = get_host(caller.data_mut());
-                    host.yield_now();
-                    Ok(())
-                },
-            )?;
-
-            Ok(())
-        }
-
-        /// Back-compat shim for instantiating the component.
-        pub struct Component;
-
-        impl Component {
-            /// Loads the component from raw bytes, mirroring the old helper.
-            pub fn instantiate(
-                engine: &wasmtime::Engine,
-                component_wasm: &[u8],
-            ) -> AnyResult<WasmtimeComponent> {
-                WasmtimeComponent::from_binary(engine, component_wasm)
-                    .map_err(|err| anyhow::anyhow!("{err}"))
-            }
-        }
-
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:component@0.4.0";
-    }
-);
-
-#[cfg(feature = "pack-export-v0-4")]
-declare_world!(
-    mod pack_export_v0_4,
-    path = "bundled-wit/greentic-pack-export-0.4.0",
-    world = "greentic:pack-export/pack-exports@0.4.0",
-    legacy = {
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:pack-export@0.4.0";
     }
 );
 
@@ -312,17 +103,6 @@ declare_world!(
     legacy = {
         /// Canonical package identifier.
         pub const PACKAGE_ID: &str = "greentic:provision@0.1.0";
-    }
-);
-
-#[cfg(feature = "types-core-v0-4")]
-declare_world!(
-    mod types_core_v0_4,
-    path = "bundled-wit/greentic-types-core-0.4.0",
-    world = "greentic:types-core/core@0.4.0",
-    legacy = {
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:types-core@0.4.0";
     }
 );
 
@@ -408,28 +188,6 @@ declare_world!(
     legacy = {
         /// Canonical package identifier.
         pub const PACKAGE_ID: &str = "greentic:operator@1.0.0";
-    }
-);
-
-#[cfg(feature = "pack-export-v0-2")]
-declare_world!(
-    mod pack_export_v0_2,
-    path = "bundled-wit/greentic-pack-export-0.2.0",
-    world = "greentic:pack-export/pack-exports@0.2.0",
-    legacy = {
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:pack-export@0.2.0";
-    }
-);
-
-#[cfg(feature = "types-core-v0-2")]
-declare_world!(
-    mod types_core_v0_2,
-    path = "bundled-wit/greentic-types-core-0.2.0",
-    world = "greentic:types-core/core@0.2.0",
-    legacy = {
-        /// Canonical package identifier.
-        pub const PACKAGE_ID: &str = "greentic:types-core@0.2.0";
     }
 );
 

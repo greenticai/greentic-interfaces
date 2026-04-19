@@ -8,8 +8,7 @@ As of 2026-02-05, shared WIT types are centrally owned by `greentic:interfaces-t
 - Canonical interface errors are now defined once as `iface-error` in `greentic:interfaces-types` and imported where used.
 
 ## Breaking Notes
-- `greentic:component@0.4.0` and `greentic:component@0.5.0` now use the canonical `tenant-ctx` shape from `greentic:interfaces-types`. If your component relied on the old, smaller record, update your bindings to the new canonical schema.
-- `greentic:types-core@0.2.0`, `greentic:types-core@0.4.0`, and `greentic:pack-export@0.2.0` now use the canonical `tenant-ctx`. The `deployment-ctx` data is no longer nested under `tenant-ctx`; it is now carried as `run-opts.deployment` instead.
+- `greentic:worker@1.0.0` now carries its worker-specific tenant/deployment support types directly instead of importing `greentic:types-core@0.4.0`.
 
 ## 0.6 QA Mode Rename
 - In `greentic:component@0.6.0` and `greentic:pack@0.6.0`, the QA enum value `upgrade` was renamed to `update`.
