@@ -360,6 +360,11 @@ struct WorldFeature {
 
 const WORLD_FEATURES: &[WorldFeature] = &[
     WorldFeature {
+        package: "greentic:component@0.5.0",
+        world: "component",
+        feature: "component-node",
+    },
+    WorldFeature {
         package: "greentic:component@0.6.0",
         world: "component",
         feature: "component-v0-6",
@@ -373,6 +378,11 @@ const WORLD_FEATURES: &[WorldFeature] = &[
         package: "greentic:component@0.6.0",
         world: "component-i18n-support",
         feature: "component-v0-6",
+    },
+    WorldFeature {
+        package: "greentic:component@0.4.0",
+        world: "component",
+        feature: "component-node-v0-4",
     },
     WorldFeature {
         package: "greentic:component@1.0.0",
@@ -490,6 +500,16 @@ const WORLD_FEATURES: &[WorldFeature] = &[
         feature: "metadata",
     },
     WorldFeature {
+        package: "greentic:pack-export@0.2.0",
+        world: "pack-exports",
+        feature: "pack-export",
+    },
+    WorldFeature {
+        package: "greentic:pack-export@0.4.0",
+        world: "pack-exports",
+        feature: "pack-export",
+    },
+    WorldFeature {
         package: "greentic:pack-export-v1@0.1.0",
         world: "pack-host",
         feature: "pack-export-v1",
@@ -550,6 +570,16 @@ const WORLD_FEATURES: &[WorldFeature] = &[
         feature: "runner",
     },
     WorldFeature {
+        package: "greentic:types-core@0.2.0",
+        world: "core",
+        feature: "types-core",
+    },
+    WorldFeature {
+        package: "greentic:types-core@0.4.0",
+        world: "core",
+        feature: "types-core",
+    },
+    WorldFeature {
         package: "wasix:mcp@24.11.5",
         world: "mcp-router",
         feature: "wasix-mcp-24-11-05-guest",
@@ -583,7 +613,7 @@ fn ensure_any_world_feature(active_features: &HashSet<String>) -> Result<(), Box
         return Ok(());
     }
 
-    Err("no world features enabled; enable at least one (e.g. component-v0-6)".into())
+    Err("no world features enabled; enable at least one (e.g. component-node)".into())
 }
 
 fn world_enabled(package_ref: &str, world: &str, active_features: &HashSet<String>) -> bool {

@@ -7,10 +7,23 @@ pub mod bindings;
 #[cfg(all(not(target_arch = "wasm32"), feature = "host-bridge"))]
 pub mod host_bridge;
 
+#[cfg(feature = "component-node")]
+#[doc(hidden)]
+pub mod component_entrypoint;
+
+#[cfg(feature = "component-node")]
+pub use component_entrypoint::{NODE_EXPORT_PREFIX, stream_from_invoke_result};
+
 #[cfg(feature = "distributor-api-imports")]
 mod distributor_api_imports;
 #[cfg(feature = "distributor-api-v1-1-imports")]
 mod distributor_api_imports_v1_1;
+
+/// Component exports for `greentic:component/component@0.5.0`.
+#[cfg(feature = "component-node")]
+pub mod component {
+    pub use crate::bindings::greentic_component_0_5_0_component::exports::greentic::component::*;
+}
 
 /// Component exports for `greentic:component/component@0.6.0` plus the
 /// canonical `component-qa` and `component-i18n` guest exports.
@@ -200,12 +213,79 @@ macro_rules! export_component_v060 {
     };
 }
 
+/// Legacy component exports for `greentic:component/component@0.4.0`.
+#[cfg(feature = "component-node-v0-4")]
+pub mod component_v0_4 {
+    pub use crate::bindings::greentic_component_0_4_0_component::exports::greentic::component::*;
+}
+
 /// Generic component host ABI `greentic:component-v1/component-host@0.1.0`.
 #[cfg(feature = "component-v1")]
 pub mod component_v1 {
     pub use crate::bindings::greentic_component_v1_0_1_0_component_host::exports::greentic::component_v1::*;
     #[cfg(not(target_arch = "wasm32"))]
     pub use greentic_interfaces::mappers::{ComponentOutcome, ComponentOutcomeStatus};
+}
+
+/// Helper macro to export an implementation of `greentic:component/node@0.4.0`.
+#[cfg(feature = "component-node-v0-4")]
+#[macro_export]
+macro_rules! export_component_node_v0_4 {
+    ($ty:ty) => {
+        const _: () = {
+            use $crate::bindings::greentic_component_0_4_0_component::exports::greentic::component::node;
+
+            #[unsafe(export_name = "greentic:component/node@0.4.0#get-manifest")]
+            unsafe extern "C" fn export_get_manifest() -> *mut u8 {
+                node::_export_get_manifest_cabi::<$ty>()
+            }
+
+            #[unsafe(export_name = "cabi_post_greentic:component/node@0.4.0#get-manifest")]
+            unsafe extern "C" fn post_return_get_manifest(arg0: *mut u8) {
+                node::__post_return_get_manifest::<$ty>(arg0);
+            }
+
+            #[unsafe(export_name = "greentic:component/node@0.4.0#on-start")]
+            unsafe extern "C" fn export_on_start(arg0: *mut u8) -> *mut u8 {
+                node::_export_on_start_cabi::<$ty>(arg0)
+            }
+
+            #[unsafe(export_name = "cabi_post_greentic:component/node@0.4.0#on-start")]
+            unsafe extern "C" fn post_return_on_start(arg0: *mut u8) {
+                node::__post_return_on_start::<$ty>(arg0);
+            }
+
+            #[unsafe(export_name = "greentic:component/node@0.4.0#on-stop")]
+            unsafe extern "C" fn export_on_stop(arg0: *mut u8) -> *mut u8 {
+                node::_export_on_stop_cabi::<$ty>(arg0)
+            }
+
+            #[unsafe(export_name = "cabi_post_greentic:component/node@0.4.0#on-stop")]
+            unsafe extern "C" fn post_return_on_stop(arg0: *mut u8) {
+                node::__post_return_on_stop::<$ty>(arg0);
+            }
+
+            #[unsafe(export_name = "greentic:component/node@0.4.0#invoke")]
+            unsafe extern "C" fn export_invoke(arg0: *mut u8) -> *mut u8 {
+                node::_export_invoke_cabi::<$ty>(arg0)
+            }
+
+            #[unsafe(export_name = "cabi_post_greentic:component/node@0.4.0#invoke")]
+            unsafe extern "C" fn post_return_invoke(arg0: *mut u8) {
+                node::__post_return_invoke::<$ty>(arg0);
+            }
+
+            #[unsafe(export_name = "greentic:component/node@0.4.0#invoke-stream")]
+            unsafe extern "C" fn export_invoke_stream(arg0: *mut u8) -> *mut u8 {
+                node::_export_invoke_stream_cabi::<$ty>(arg0)
+            }
+
+            #[unsafe(export_name = "cabi_post_greentic:component/node@0.4.0#invoke-stream")]
+            unsafe extern "C" fn post_return_invoke(arg0: *mut u8) {
+                node::__post_return_invoke_stream::<$ty>(arg0);
+            }
+        };
+    };
 }
 
 /// Lifecycle hooks for `greentic:lifecycle/component-lifecycle@1.0.0`.
@@ -302,8 +382,18 @@ pub mod provision {
 }
 
 /// Pack metadata/flow discovery worlds.
-#[cfg(feature = "pack-export-v1")]
+#[cfg(any(feature = "pack-export", feature = "pack-export-v1"))]
 pub mod pack_exports {
+    /// Pack exports `0.2.0` world.
+    #[cfg(feature = "pack-export")]
+    pub mod v0_2 {
+        pub use crate::bindings::greentic_pack_export_0_2_0_pack_exports::exports::greentic::pack_export::*;
+    }
+    /// Pack exports `0.4.0` world.
+    #[cfg(feature = "pack-export")]
+    pub mod v0_4 {
+        pub use crate::bindings::greentic_pack_export_0_4_0_pack_exports::exports::greentic::pack_export::*;
+    }
     /// Pack host metadata world `greentic:pack-export-v1/pack-host@0.1.0`.
     #[cfg(feature = "pack-export-v1")]
     pub mod v1 {
