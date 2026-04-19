@@ -157,7 +157,7 @@ pub mod worker {
         TenantCtx as WitWorkerTenantCtx, WorkerMessage as WitWorkerMessage,
         WorkerRequest as WitWorkerRequest, WorkerResponse as WitWorkerResponse,
     };
-    use greentic_interfaces::worker_v1::greentic::types_core::types::{
+    use greentic_interfaces::worker_v1::exports::greentic::worker::worker_api::{
         Cloud, DeploymentCtx, Platform,
     };
     use greentic_types::{ErrorCode, GreenticError, TenantCtx};
