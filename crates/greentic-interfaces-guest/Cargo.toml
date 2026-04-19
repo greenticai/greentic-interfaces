@@ -2,7 +2,7 @@
 name = "greentic-interfaces-guest"
 version.workspace = true
 edition = "2024"
-rust-version = "1.91"
+rust-version = "1.95"
 license = "MIT"
 repository = "https://github.com/greenticai/greentic-interfaces"
 description = "Guest-facing bindings for Greentic components targeting wasm32-wasip2"

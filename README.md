@@ -329,7 +329,7 @@ Two smoke-level examples live under `examples/`:
 
 ```bash
 # Install the WASI Preview 2 target once (matches CI)
-rustup target add wasm32-wasip2 --toolchain 1.91.0
+rustup target add wasm32-wasip2 --toolchain 1.95.0
 
 # Compile the component to Wasm (targets wasm32-wasip2)
 CARGO_TARGET_DIR=target cargo build --manifest-path examples/component-describe/Cargo.toml --target wasm32-wasip2
@@ -360,7 +360,7 @@ Toggles:
 - `LOCAL_CHECK_STRICT=1` – fail immediately if required tools are missing.
 - `LOCAL_CHECK_VERBOSE=1` – print every command before executing it.
 - `LOCAL_CHECK_EXAMPLES=1` – build/run the example crates (requires the `wasm32-wasip2` target).
-- The example steps expect `rustup target add wasm32-wasip2 --toolchain 1.91.0` to have been run first.
+- The example steps expect `rustup target add wasm32-wasip2 --toolchain 1.95.0` to have been run first.
 
 A `pre-push` hook is installed automatically (if absent) to run the script before pushing; remove `.git/hooks/pre-push` if you prefer to opt out.
 
