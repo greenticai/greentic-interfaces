@@ -16,8 +16,6 @@ greentic-interfaces = { workspace = true, optional = true, default-features = fa
 wit-bindgen = { workspace = true }
 
 [features]
-component-node = []
-component-node-v0-4 = []
 component-v0-6 = []
 component-v1 = ["greentic-interfaces"]
 lifecycle = []
@@ -47,19 +45,15 @@ distributor-api-v1-1-imports = ["distributor-api-v1-1"]
 gui-fragment = []
 deploy-plan = []
 repo-ui-actions = []
-pack-export = []
 pack-export-v1 = ["greentic-interfaces"]
 pack-validate = []
 provision = []
 common-types = []
 runner = []
-types-core = []
 wasix-mcp-24-11-05-guest = []
 wasix-mcp-25-03-26-guest = []
 wasix-mcp-25-06-18-guest = []
 guest = [
-    "component-node",
-    "component-node-v0-4",
     "component-v0-6",
     "component-v1",
     "common-types",
@@ -89,12 +83,10 @@ guest = [
     "provider-common",
     "deploy-plan",
     "repo-ui-actions",
-    "pack-export",
     "pack-export-v1",
     "pack-validate",
     "provision",
     "runner",
-    "types-core",
     "wasix-mcp-24-11-05-guest",
     "wasix-mcp-25-03-26-guest",
     "wasix-mcp-25-06-18-guest",

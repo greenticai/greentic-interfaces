@@ -28,17 +28,9 @@ default = [
     "common-types-v0-1",
     "component-v1",
     "component-v0-6",
-    "component-v0-6",
-    "component-v0-6",
     "pack-export-v1",
     "pack-validate-v0-1",
     "provision-v0-1",
-    "component-v0-4",
-    "component-v0-5",
-    "pack-export-v0-4",
-    "types-core-v0-4",
-    "pack-export-v0-2",
-    "types-core-v0-2",
     "wasix-mcp-v0-0-5",
     "wasix-mcp-24-11-05",
     "wasix-mcp-25-03-26",
@@ -73,12 +65,8 @@ wit-v1_2_3 = []
 wit-v3_4_5 = []
 common-types-v0-1 = []
 component-v1 = []
-component-v0-4 = []
-component-v0-5 = []
 component-v0-6 = []
 describe-v1 = []
-pack-export-v0-2 = []
-pack-export-v0-4 = []
 pack-export-v1 = []
 pack-validate-v0-1 = []
 provision-v0-1 = []
@@ -105,8 +93,6 @@ oci-v1 = []
 http-client-v1 = []
 http-client-v1-1 = []
 telemetry-logger-v1 = []
-types-core-v0-2 = []
-types-core-v0-4 = []
 repo-ui-actions-v1 = []
 worker-api = []
 gui-fragment = []
@@ -118,17 +104,11 @@ wit-all = [
     "wit-v0_6_0",
     "common-types-v0-1",
     "component-v1",
-    "component-v0-4",
-    "component-v0-5",
     "component-v0-6",
     "describe-v1",
-    "pack-export-v0-2",
-    "pack-export-v0-4",
     "pack-export-v1",
     "pack-validate-v0-1",
     "provision-v0-1",
-    "types-core-v0-2",
-    "types-core-v0-4",
     "runner-host-v1",
     "component-lifecycle-v1",
     "wasix-mcp-v0-0-5",
