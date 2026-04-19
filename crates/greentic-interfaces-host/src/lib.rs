@@ -23,18 +23,6 @@ pub mod component {
     pub mod v0_6 {
         pub use greentic_interfaces::component_v0_6::*;
     }
-    /// Component ABI with config surface `greentic:component/component@0.5.0`.
-    pub mod v0_5 {
-        pub use greentic_interfaces::component_v0_5::*;
-    }
-    /// Component ABI with optional config schema export `greentic:component/component-configurable@0.5.0`.
-    pub mod v0_5_configurable {
-        pub use greentic_interfaces::component_configurable_v0_5::*;
-    }
-    /// Compatibility exports for `greentic:component/component@0.4.0`.
-    pub mod v0_4 {
-        pub use greentic_interfaces::component_v0_4::*;
-    }
     /// Generic component invocation world `greentic:component-v1/component-host@0.1.0`.
     pub mod v1 {
         pub use greentic_interfaces::component_v1::*;
@@ -63,14 +51,6 @@ pub mod operator_v1 {
 
 /// Pack exporters.
 pub mod pack_exports {
-    /// Pack exports `0.2.0` world.
-    pub mod v0_2 {
-        pub use greentic_interfaces::pack_export_v0_2::*;
-    }
-    /// Pack exports `0.4.0` world.
-    pub mod v0_4 {
-        pub use greentic_interfaces::pack_export_v0_4::*;
-    }
     /// Pack metadata/flow discovery world `greentic:pack-export-v1/pack-host@0.1.0`.
     pub mod v1 {
         pub use greentic_interfaces::mappers::{
@@ -85,14 +65,6 @@ pub mod types {
     /// Shared flow/component fundamentals `greentic:common-types/common@0.1.0`.
     pub mod common_v0_1 {
         pub use greentic_interfaces::common_types_v0_1::*;
-    }
-    /// Core type defs for the 0.2 line.
-    pub mod types_core_v0_2 {
-        pub use greentic_interfaces::types_core_v0_2::*;
-    }
-    /// Core type defs for the 0.4 line.
-    pub mod types_core_v0_4 {
-        pub use greentic_interfaces::types_core_v0_4::*;
     }
 }
 
@@ -154,11 +126,9 @@ pub mod oauth_broker_client {
 pub mod worker {
     use greentic_interfaces::bindings::greentic::interfaces_types::types as interfaces_types;
     use greentic_interfaces::worker_v1::exports::greentic::worker::worker_api::{
-        TenantCtx as WitWorkerTenantCtx, WorkerMessage as WitWorkerMessage,
-        WorkerRequest as WitWorkerRequest, WorkerResponse as WitWorkerResponse,
-    };
-    use greentic_interfaces::worker_v1::greentic::types_core::types::{
-        Cloud, DeploymentCtx, Platform,
+        Cloud, DeploymentCtx, Platform, TenantCtx as WitWorkerTenantCtx,
+        WorkerMessage as WitWorkerMessage, WorkerRequest as WitWorkerRequest,
+        WorkerResponse as WitWorkerResponse,
     };
     use greentic_types::{ErrorCode, GreenticError, TenantCtx};
     use serde::{Deserialize, Serialize};

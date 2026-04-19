@@ -28,17 +28,11 @@ default = [
     "common-types-v0-1",
     "component-v1",
     "component-v0-6",
-    "component-v0-5",
     "component-v0-6",
     "component-v0-6",
     "pack-export-v1",
     "pack-validate-v0-1",
     "provision-v0-1",
-    "component-v0-4",
-    "pack-export-v0-4",
-    "types-core-v0-4",
-    "pack-export-v0-2",
-    "types-core-v0-2",
     "wasix-mcp-v0-0-5",
     "wasix-mcp-24-11-05",
     "wasix-mcp-25-03-26",
@@ -74,17 +68,11 @@ wit-v3_4_5 = []
 common-types-v0-1 = []
 component-v1 = []
 component-v0-6 = []
-component-v0-5 = []
-component-v0-4 = []
 describe-v1 = []
 pack-export-v1 = []
 pack-validate-v0-1 = []
 provision-v0-1 = []
-pack-export-v0-4 = []
-types-core-v0-4 = []
 runner-host-v1 = []
-pack-export-v0-2 = []
-types-core-v0-2 = []
 wasix-mcp-v0-0-5 = []
 wasix-mcp-24-11-05 = []
 wasix-mcp-25-03-26 = []
@@ -119,17 +107,11 @@ wit-all = [
     "common-types-v0-1",
     "component-v1",
     "component-v0-6",
-    "component-v0-5",
-    "component-v0-4",
     "describe-v1",
     "pack-export-v1",
     "pack-validate-v0-1",
     "provision-v0-1",
-    "pack-export-v0-4",
-    "types-core-v0-4",
     "runner-host-v1",
-    "pack-export-v0-2",
-    "types-core-v0-2",
     "component-lifecycle-v1",
     "wasix-mcp-v0-0-5",
     "wasix-mcp-24-11-05",
@@ -162,6 +144,7 @@ schema = ["dep:schemars", "greentic-types/schemars"]
 
 [dependencies]
 greentic-types = { workspace = true }
+constant_time_eq = { workspace = true }
 semver = { workspace = true }
 time = { workspace = true }
 serde = { workspace = true, optional = true }

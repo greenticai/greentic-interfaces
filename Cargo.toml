@@ -20,7 +20,7 @@ resolver = "2"
 license = "MIT"
 edition = "2024"
 authors = ["Greentic.ai"]
-version = "0.4.113"
+version = "0.4.114"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
@@ -29,6 +29,7 @@ greentic-interfaces = { path = "crates/greentic-interfaces", version = "0.4", de
 greentic-interfaces-wasmtime = { path = "crates/greentic-interfaces-wasmtime", version = "0.4", default-features = false }
 greentic-interfaces-guest = { path = "crates/greentic-interfaces-guest", version = "0.4", default-features = false }
 greentic-types = { version = "0.4"}
+constant_time_eq = "=0.4.2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 semver = "1"
@@ -36,11 +37,11 @@ time = "0.3"
 thiserror = "2"
 wasmtime = { version = "43", default-features = false, features = ["component-model", "cranelift", "runtime", "std"] }
 wasmtime-wasi = "43"
-wit-bindgen = { version = "0.54", default-features = false, features = ["macros", "realloc"] }
-wit-bindgen-core = "0.54"
-wit-bindgen-rust = "0.54"
+wit-bindgen = { version = "0.57", default-features = false, features = ["macros", "realloc"] }
+wit-bindgen-core = "0.57"
+wit-bindgen-rust = "0.57"
 schemars = { version = "1", features = ["derive"] }
-wit-parser = "0.245"
+wit-parser = "0.247"
 insta = { version = "1", features = ["json"] }
 camino = "1"
 proc-macro2 = "1"

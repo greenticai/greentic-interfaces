@@ -10,6 +10,7 @@
 ## Contract Docs
 
 - Interface inventory: `docs/interfaces_inventory.md`
+- ABI boundary for flow mappings: `docs/DISCOVERY_COMPONENT_INVOKE.md`
 - Component descriptor notes: `docs/component-descriptor.md`
 - Component invoke/discovery notes: `docs/DISCOVERY_COMPONENT_INVOKE.md`
 - Worker ABI notes: `docs/worker.md`

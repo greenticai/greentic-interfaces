@@ -3,28 +3,34 @@
 
 #[cfg(target_arch = "wasm32")]
 mod guest {
-    use greentic_interfaces_guest::component::node::{InvokeResult, NodeError};
-    use greentic_interfaces_guest::component_entrypoint;
+    use greentic_interfaces_guest::component_v0_6::node;
 
-    fn describe_payload() -> String {
-        r#"{"component":"guest-node-minimal"}"#.to_string()
-    }
+    struct Component;
 
-    fn handle_message(op: String, input: String) -> InvokeResult {
-        match op.as_str() {
-            "fail" => InvokeResult::Err(NodeError {
-                code: "demo".to_string(),
-                message: format!("error:{input}"),
-                retryable: false,
-                backoff_ms: None,
-                details: None,
-            }),
-            _ => InvokeResult::Ok(format!("handled:{input}")),
+    impl node::Guest for Component {
+        fn describe() -> node::ComponentDescriptor {
+            node::ComponentDescriptor {
+                name: "guest-node-minimal".into(),
+                version: "0.1.0".into(),
+                summary: Some("Minimal 0.6 component example".into()),
+                capabilities: vec![],
+                ops: vec![],
+                schemas: vec![],
+                setup: None,
+            }
+        }
+
+        fn invoke(
+            _op: String,
+            _envelope: node::InvocationEnvelope,
+        ) -> Result<node::InvocationResult, node::NodeError> {
+            Ok(node::InvocationResult {
+                ok: true,
+                output_cbor: vec![],
+                output_metadata_cbor: None,
+            })
         }
     }
 
-    component_entrypoint!({
-        manifest: describe_payload,
-        invoke: handle_message,
-    });
+    greentic_interfaces_guest::export_component_v060!(Component);
 }

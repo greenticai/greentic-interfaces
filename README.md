@@ -11,6 +11,8 @@ This repository contains the shared ABI contracts and Wasmtime runtime helpers u
 - **InvocationEnvelope**: the host-owned wrapper of `TenantCtx`, `flow_id`, `step_id`, `component_id`, and `attempt` plus the call spec bytes. Components only see the call spec.
 - **TenantCtx / i18n_id**: the tenant context carries tenant/team/user/env IDs and the mandatory `i18n_id` that threads localization and telemetry through every call.
 
+Mapping aliases such as `in_map`, `out_map`, and `err_map` are flow-level authoring/runtime concepts used to shape payloads between steps. They are not component ABI fields. Components continue to implement the current `component@0.6.0` WIT exports, while hosts and runtimes own `CallSpec` persistence, invocation wrapping, and orchestration.
+
 Refer to `contracts/0.6.0/RENAMES.md` for the full naming dictionary and `contracts/0.6.0/CANONICAL_MAP.md` for the decisions driving each term.
 `ci/local_check.sh` now runs `scripts/naming_lint.sh` to enforce this vocabulary in the canonical contract tree before the rest of the checks execute.
 
@@ -25,18 +27,16 @@ Refer to `contracts/0.6.0/RENAMES.md` for the full naming dictionary and `contra
 [![MSRV](https://img.shields.io/badge/MSRV-1.91%2B-blue)](#minimum-supported-rust-version)
 
 > Canonical runtime target: `greentic:component@0.6.0` + `greentic:types-core@0.6.0` + `greentic:codec@0.6.0`.
-> Older surfaces are compatibility-only and are documented in `docs/vision/legacy.md`.
+> Removed legacy component and pack-export surfaces are documented historically in `docs/vision/legacy.md`.
 
 ## Documentation Map
 
 - Docs index: `docs/README.md`
 - Vision docs: `docs/vision/README.md`
 - Canonical v0.6 direction: `docs/vision/v0_6.md`
-- Legacy compatibility matrix and replacements: `docs/vision/legacy.md`
+- Historical compatibility notes: `docs/vision/legacy.md`
 
 - Host/guest reexports: `greentic-interfaces-host` and `greentic-interfaces-guest` now surface the v1 worlds plus mapper helpers: component outcomes (`ComponentOutcome`, `ComponentOutcomeStatus`) and pack/flow descriptors (`PackDescriptor`, `FlowDescriptor`) for the new pack-export-v1 ABI.
-
-Legacy JSON component config guidance (`component@0.5.0`) is tracked in `docs/vision/legacy.md`.
 
 ### Feature flags for component@0.6.0 + v1 worlds
 
@@ -74,7 +74,7 @@ These crates are published from this workspace. Downstream components that only 
 use greentic_interfaces_host::host_import::v0_6::add_to_linker;
 
 // Guest side: call host capabilities from inside a component.
-use greentic_interfaces_guest::component::node::Guest;
+use greentic_interfaces_guest::component_v0_6::node::Guest;
 use greentic_interfaces_guest::secrets_store::secrets_store;
 ```
 
@@ -152,7 +152,7 @@ greentic_interfaces_guest::export_component_v060!(
 ```
 
 ```rust
-use greentic_interfaces_guest::component::node::Guest;
+use greentic_interfaces_guest::component_v0_6::node::Guest;
 use greentic_interfaces_guest::secrets_store::secrets_store;
 use greentic_interfaces_guest::http_client::http_client;
 use greentic_interfaces_guest::telemetry_logger::logger_api;
@@ -181,43 +181,6 @@ let resolved = ref_api.resolve_ref("oci://registry.example/greentic/component@sh
 let _artifact = ref_api.get_by_digest(&resolved.digest);
 ```
 
-#### Legacy guest example (component@0.5.0 node)
-
-Use the `component_entrypoint!` macro so the crate generates the WASM export glue (marker section, unsafe `#[export_name]` funcs) for you. Only the payload description and invoke handler are required; streaming defaults to `[Progress(0), Data(result), Done]` and lifecycle hooks default to `Ok`.
-
-```rust
-#![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
-
-use greentic_interfaces_guest::component::node::{InvokeResult, NodeError};
-use greentic_interfaces_guest::component_entrypoint;
-
-fn describe_payload() -> String {
-    r#"{"name":"demo","version":"1.0.0"}"#.to_string()
-}
-
-fn handle_message(op: String, input: String) -> InvokeResult {
-    match op.as_str() {
-        "fail" => InvokeResult::Err(NodeError {
-            code: "demo".into(),
-            message: format!("bad input: {input}"),
-            retryable: false,
-            backoff_ms: None,
-            details: None,
-        }),
-        _ => InvokeResult::Ok(format!("ok:{input}")),
-    }
-}
-
-component_entrypoint!({
-    manifest: describe_payload,
-    invoke: handle_message,
-    // Optional:
-    // invoke_stream: true, // default; set false to disable
-    // on_start: my_start_fn,
-    // on_stop: my_stop_fn,
-});
-```
-
 ## Migration guide: move to host/guest crates
 
 1. Replace direct `greentic-interfaces` imports in hosts with `greentic-interfaces-host` and switch to the curated modules (`secrets`, `state`, `http`, `telemetry`, `oauth`).
@@ -240,7 +203,6 @@ For local development you can override the crates.io dependency on `greentic-typ
 | `worker-api` | `greentic:worker/worker@1.0.0` (`worker`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/worker@1.0.0/package.wit) | Generic worker request/response envelope; see `docs/worker.md` for details. |
 | `gui-fragment` | `greentic:gui/gui-fragment@1.0.0` (`gui-fragment`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/gui@1.0.0/package.wit) | Server-rendered HTML fragments for Greentic-GUI; hosts call `render-fragment(fragment-id, ctx)` and inject the returned HTML. |
 | `oauth-broker-v1` | `greentic:oauth-broker@1.0.0` (`broker`, `broker-client`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/oauth-broker@1.0.0/package.wit) | Generic OAuth broker: hosts implement the broker world; guest components import via the new `broker-client` world to build consent URLs, exchange codes, and fetch tokens. |
-| `component-v0-5` | `greentic:component/component@0.5.0` (`component`, `component-configurable`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/component@0.5.0/package.wit) | Config-aware component ABI with a canonical `@config` record; optional `get-config-schema()` export for JSON Schema overrides; `component@0.4.0` remains available for legacy consumers. |
 | `describe-v1` | `greentic:component@1.0.0` (`describe-v1`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/component@1.0.0/package.wit) | Describe-only schema export for packs without the full component ABI. |
 | `runner-host-v1` | `greentic:host@1.0.0` (`http-v1`, `kv-v1`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/host@1.0.0/package.wit) | Legacy runner host bundle (now secrets-free; kept only for HTTP/KV). |
 | `operator-hooks-v1` | `greentic:operator@1.0.0` (`hook-provider`) | [`package.wit`](https://greenticai.github.io/greentic-interfaces/operator@1.0.0/package.wit) | Operation envelope + hook decision contracts for pre/post operator interceptors. |
@@ -256,7 +218,7 @@ For local development you can override the crates.io dependency on `greentic-typ
 | `distributor-api-v1-1` | `greentic:distributor-api/distributor-api@1.1.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/distributor@1.1.0/package.wit) | Adds ref-based resolution (`resolve-ref`) and digest fetching (`get-by-digest`) for OCI component references (tag or digest); keep `@1.0.0` for pack-id + component-id flows. |
 | `distribution-v1` | `greentic:distribution/distribution@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/distribution@1.0.0/package.wit) | Experimental desired state submission/retrieval (tenant + IDs + JSON blobs), not used by current flows. |
 | `oci-v1` | `greentic:oci/oci-distribution@1.0.0` | [`package.wit`](https://greenticai.github.io/greentic-interfaces/oci@1.0.0/package.wit) | Tenant-scoped OCI distribution helpers (push/get pull reference). |
-| `wit-all` | Aggregates every feature above plus the legacy defaults (`component-v0-4`, `types-core-*`, etc.) | – | Handy opt-in when you just want “everything on”. |
+| `wit-all` | Aggregates every feature above | – | Handy opt-in when you just want “everything on”. |
 
 Additional shared package: `provider:common@0.0.2` (under `wit/provider-common/world.wit`) carries messaging provider metadata, capability flags, limits, render tiers, warnings, and encoded payload helpers for provider components. Enable the `provider-common` feature to generate bindings; the package remains additive and shared across messaging providers.
 
