@@ -22,19 +22,20 @@ edition = "2024"
 authors = [
     "Greentic.ai",
 ]
-version = "0.4.112"
+version = "0.5.0"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
 anyhow = "1"
+constant_time_eq = "0.4"
 serde_json = "1"
 semver = "1"
 time = "0.3"
 thiserror = "2"
 wasmtime-wasi = "43"
-wit-bindgen-core = "0.54"
-wit-bindgen-rust = "0.54"
-wit-parser = "0.245"
+wit-bindgen-core = "0.57"
+wit-bindgen-rust = "0.57"
+wit-parser = "0.247"
 camino = "1"
 proc-macro2 = "1"
 quote = "1"
@@ -43,21 +44,21 @@ wat = "1"
 
 [workspace.dependencies.greentic-interfaces]
 path = "crates/greentic-interfaces"
-version = ">=0.4.0-0, <0.5.0-0"
+version = ">=0.5.0-0, <0.6.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-interfaces-wasmtime]
 path = "crates/greentic-interfaces-wasmtime"
-version = ">=0.4.0-0, <0.5.0-0"
+version = ">=0.5.0-0, <0.6.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-interfaces-guest]
 path = "crates/greentic-interfaces-guest"
-version = ">=0.4.0-0, <0.5.0-0"
+version = ">=0.5.0-0, <0.6.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-types]
-version = ">=0.4.0-0, <0.5.0-0"
+version = ">=0.5.0-0, <0.6.0-0"
 
 [workspace.dependencies.serde]
 version = "1"
@@ -76,7 +77,7 @@ features = [
 ]
 
 [workspace.dependencies.wit-bindgen]
-version = "0.54"
+version = "0.57"
 default-features = false
 features = [
     "macros",

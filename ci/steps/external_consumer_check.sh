@@ -3,16 +3,26 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CRATE_NAME="greentic-interfaces"
+LOCAL_CHECK_ONLINE="${LOCAL_CHECK_ONLINE:-0}"
 
 cd "${ROOT}"
 
+declare -a CARGO_ARGS=()
+if [[ "${LOCAL_CHECK_ONLINE}" != "1" ]]; then
+  CARGO_ARGS+=(--offline)
+fi
+
+package_target_dir="$(mktemp -d)"
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "${package_target_dir}" "${tmpdir}"' EXIT
+
 echo "[external-consumer] packaging ${CRATE_NAME}"
-cargo package --allow-dirty -p "${CRATE_NAME}"
+CARGO_TARGET_DIR="${package_target_dir}" cargo package "${CARGO_ARGS[@]}" --allow-dirty -p "${CRATE_NAME}"
 
 echo "[external-consumer] listing packaged files for ${CRATE_NAME}"
-cargo package --allow-dirty --list -p "${CRATE_NAME}"
+CARGO_TARGET_DIR="${package_target_dir}" cargo package "${CARGO_ARGS[@]}" --allow-dirty --list -p "${CRATE_NAME}"
 
-crate_tar="$(ls -1t "target/package/${CRATE_NAME}-"*.crate | head -n1)"
+crate_tar="$(ls -1t "${package_target_dir}/package/${CRATE_NAME}-"*.crate | head -n1)"
 if [[ -z "${crate_tar}" ]]; then
   echo "ERROR: no packaged crate found for ${CRATE_NAME}" >&2
   exit 1
@@ -21,9 +31,6 @@ fi
 crate_file="$(basename "${crate_tar}")"
 crate_version="${crate_file#${CRATE_NAME}-}"
 crate_version="${crate_version%.crate}"
-
-tmpdir="$(mktemp -d)"
-trap 'rm -rf "${tmpdir}"' EXIT
 
 pkg_root="${tmpdir}/pkg"
 consumer_root="${tmpdir}/consumer"
@@ -39,7 +46,7 @@ if [[ ! -d "${unpacked_path}" ]]; then
 fi
 
 echo "[external-consumer] cargo build from unpacked crate"
-cargo build --manifest-path "${unpacked_path}/Cargo.toml"
+cargo build "${CARGO_ARGS[@]}" --manifest-path "${unpacked_path}/Cargo.toml"
 
 cat > "${consumer_root}/Cargo.toml" <<EOF
 [package]
@@ -58,6 +65,6 @@ fn main() {
 EOF
 
 echo "[external-consumer] cargo check"
-cargo check --manifest-path "${consumer_root}/Cargo.toml"
+cargo check "${CARGO_ARGS[@]}" --manifest-path "${consumer_root}/Cargo.toml"
 
 echo "[external-consumer] ok"

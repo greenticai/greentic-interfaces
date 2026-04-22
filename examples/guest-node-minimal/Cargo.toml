@@ -8,5 +8,5 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-greentic-interfaces-guest = { workspace = true, default-features = false, features = ["component-node"] }
+greentic-interfaces-guest = { workspace = true, default-features = false, features = ["component-v0-6"] }
 greentic-types = { workspace = true }

@@ -2,7 +2,7 @@
 name = "greentic-interfaces-host"
 version.workspace = true
 edition = "2024"
-rust-version = "1.91"
+rust-version = "1.95"
 license = "MIT"
 repository = "https://github.com/greenticai/greentic-interfaces"
 description = "Host-facing bindings and mappers for Greentic WIT packages"

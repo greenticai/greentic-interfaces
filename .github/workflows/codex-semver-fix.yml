@@ -1,7 +1,10 @@
 name: Codex Semver Fix
+# Moved off pull_request onto a nightly schedule. See plans/binary-bifurcation.md
+# Phase A.4 (Wave 3). Manual runs remain available via workflow_dispatch.
+
 on:
-  pull_request:
-    branches: [main]
+  schedule:
+    - cron: "20 3 * * *"
   workflow_dispatch:
     inputs:
       branch:
@@ -21,5 +24,8 @@ jobs:
     uses: greenticai/.github/.github/workflows/codex-semver-fix.yml@main
     with:
       branch: ${{ github.event.inputs.branch || '' }}
+      rust-version: "1.95.0"
+      setup-script: |
+        rustup override set 1.95.0
       semver-checks-package: "greentic-interfaces,greentic-interfaces-guest,greentic-interfaces-host,greentic-interfaces-wasmtime"
     secrets: inherit

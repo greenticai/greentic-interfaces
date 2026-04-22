@@ -55,7 +55,7 @@ if [[ -n "${LOCAL_CHECK_CARGO_BIN:-}" ]]; then
     # shellcheck disable=SC2206
     CARGO_BIN=(${LOCAL_CHECK_CARGO_BIN})
 elif need rustup; then
-    TARGET_TOOLCHAIN="1.91.0"
+    TARGET_TOOLCHAIN="1.95.0"
     if ! rustup toolchain list 2>/dev/null | grep -q "${TARGET_TOOLCHAIN}"; then
         if [[ "${LOCAL_CHECK_ONLINE}" == "1" ]]; then
             echo "[info] installing rustup toolchain ${TARGET_TOOLCHAIN}"
