@@ -20,7 +20,7 @@ resolver = "2"
 license = "MIT"
 edition = "2024"
 authors = ["Greentic.ai"]
-version = "0.5.0"
+version = "0.5.1"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
