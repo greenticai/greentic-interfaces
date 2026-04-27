@@ -22,7 +22,7 @@ edition = "2024"
 authors = [
     "Greentic.ai",
 ]
-version = "0.5.0"
+version = "0.6.0-dev.0"
 repository = "https://github.com/greenticai/greentic-interfaces"
 
 [workspace.dependencies]
@@ -44,21 +44,21 @@ wat = "1"
 
 [workspace.dependencies.greentic-interfaces]
 path = "crates/greentic-interfaces"
-version = ">=0.5.0-0, <0.6.0-0"
+version = ">=0.6.0-dev, <0.7.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-interfaces-wasmtime]
 path = "crates/greentic-interfaces-wasmtime"
-version = ">=0.5.0-0, <0.6.0-0"
+version = ">=0.6.0-dev, <0.7.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-interfaces-guest]
 path = "crates/greentic-interfaces-guest"
-version = ">=0.5.0-0, <0.6.0-0"
+version = ">=0.6.0-dev, <0.7.0-0"
 default-features = false
 
 [workspace.dependencies.greentic-types]
-version = ">=0.5.0-0, <0.6.0-0"
+version = "0.5"
 
 [workspace.dependencies.serde]
 version = "1"
