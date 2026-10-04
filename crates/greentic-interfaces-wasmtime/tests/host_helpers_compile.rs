@@ -152,6 +152,45 @@ impl state_store::StateStoreHost for DummyStateStore {
     }
 }
 
+impl state_store::StateStoreHostV1_1 for DummyStateStore {
+    fn read(
+        &mut self,
+        _key: state_store::StateKey,
+        _ctx: Option<state_store::TenantCtxV1_1>,
+    ) -> std::result::Result<
+        wasmtime::component::__internal::Vec<u8>,
+        state_store::StateStoreErrorV1_1,
+    > {
+        Ok(Vec::new())
+    }
+
+    fn write(
+        &mut self,
+        _key: state_store::StateKey,
+        _bytes: wasmtime::component::__internal::Vec<u8>,
+        _ctx: Option<state_store::TenantCtxV1_1>,
+    ) -> std::result::Result<state_store::OpAckV1_1, state_store::StateStoreErrorV1_1> {
+        Ok(state_store::OpAckV1_1::Ok)
+    }
+
+    fn delete(
+        &mut self,
+        _key: state_store::StateKey,
+        _ctx: Option<state_store::TenantCtxV1_1>,
+    ) -> std::result::Result<state_store::OpAckV1_1, state_store::StateStoreErrorV1_1> {
+        Ok(state_store::OpAckV1_1::Ok)
+    }
+
+    fn write_if_absent(
+        &mut self,
+        _key: state_store::StateKey,
+        _bytes: wasmtime::component::__internal::Vec<u8>,
+        _ctx: Option<state_store::TenantCtxV1_1>,
+    ) -> std::result::Result<bool, state_store::StateStoreErrorV1_1> {
+        Ok(true)
+    }
+}
+
 struct DummySecrets;
 impl secrets_store::SecretsStoreHost for DummySecrets {
     fn get(
@@ -260,6 +299,7 @@ fn host_helpers_compile() -> Result<()> {
         runner_host_http: Some(|state: &mut HostState| &mut state.runner_http),
         runner_host_kv: Some(|state: &mut HostState| &mut state.runner_kv),
         telemetry_logger: Some(|state: &mut HostState| &mut state.telemetry),
+        state_store_v1_1: Some(|state: &mut HostState| &mut state.state),
         state_store: Some(|state: &mut HostState| &mut state.state),
         secrets_store_v1_1: Some(|state: &mut HostState| &mut state.secrets),
         secrets_store: Some(|state: &mut HostState| &mut state.secrets),

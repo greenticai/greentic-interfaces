@@ -495,6 +495,11 @@ const WORLD_FEATURES: &[WorldFeature] = &[
         feature: "state-store",
     },
     WorldFeature {
+        package: "greentic:state@1.1.0",
+        world: "store",
+        feature: "state-store-v1-1",
+    },
+    WorldFeature {
         package: "greentic:metadata@1.0.0",
         world: "metadata-store",
         feature: "metadata",

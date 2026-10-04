@@ -43,7 +43,8 @@ v1::add_all_v1_to_linker(
         runner_host_http: Some(|state| &mut state.runner_http),
         runner_host_kv: Some(|state| &mut state.runner_kv),
         telemetry_logger: Some(|state| &mut state.telemetry),
-        state_store: Some(|state| &mut state.state),
+        state_store_v1_1: Some(|state| &mut state.state), // exposes state-store@1.1.0 + legacy @1.0.0
+        state_store: None, // legacy v1.0.0 only; ignored when v1_1 is set
         secrets_store: Some(|state| &mut state.secrets),
     },
 )?;

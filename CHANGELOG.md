@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Add `greentic:state@1.1.0` (`state-store`): identical read/write/delete plus `write-if-absent` (returns `true` when the call created the key; expired counts as absent). Adds `state-store-v1-1` features, `StateStoreHostV1_1`, `add_state_store_v1_1_to_linker` and `add_state_store_compat_to_linker` (registers `@1.1.0` and `@1.0.0` from one host impl). **Source break:** `HostFns` gained a `state_store_v1_1` field, so struct-literal users must add it (`None` keeps today's behaviour).
 - WIT ABI update: renamed the 0.6 QA enum value `upgrade` to `update` in `greentic:component@0.6.0` and `greentic:pack@0.6.0`; interface hashes/snapshots changed as expected.
 - Remove legacy provider-protocol WIT worlds (`greentic:messaging@1.0.0`, `greentic:events@1.0.0` broker/source/sink/bridge, `greentic:secrets-provider@0.1.0` and its generator/audit/policy deps) and drop the corresponding host/guest/wasmtime bindings; provider-core is now the only supported provider protocol.
 - Add `greentic:secrets-types@1.0.0` and surface `secret-requirements` in distributor resolve responses plus a typed `get-pack-status-v2` (legacy string `get-pack-status` remains for compatibility).

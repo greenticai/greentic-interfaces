@@ -247,6 +247,12 @@ pub mod state_store {
     pub use crate::bindings::greentic_state_1_0_0_store::greentic::state::state_store::*;
 }
 
+/// State store imports for `greentic:state/store@1.1.0` (adds `write-if-absent`).
+#[cfg(feature = "state-store-v1-1")]
+pub mod state_store_v1_1 {
+    pub use crate::bindings::greentic_state_1_1_0_store::greentic::state::state_store::*;
+}
+
 /// HTTP client imports for `greentic:http/client@1.0.0`.
 #[cfg(feature = "http-client")]
 pub mod http_client {
