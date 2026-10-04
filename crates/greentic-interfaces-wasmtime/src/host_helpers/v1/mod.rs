@@ -25,6 +25,9 @@ pub struct HostFns<T> {
     pub runner_host_http: Option<fn(&mut T) -> &mut dyn runner_host_http::RunnerHostHttp>,
     pub runner_host_kv: Option<fn(&mut T) -> &mut dyn runner_host_kv::RunnerHostKv>,
     pub telemetry_logger: Option<fn(&mut T) -> &mut dyn telemetry_logger::TelemetryLoggerHost>,
+    /// Prefer providing this to expose both `state-store@1.1.0` (with `write-if-absent`)
+    /// and the legacy `@1.0.0` import.
+    pub state_store_v1_1: Option<fn(&mut T) -> &mut dyn state_store::StateStoreHostV1_1>,
     pub state_store: Option<fn(&mut T) -> &mut dyn state_store::StateStoreHost>,
     /// Prefer providing this to expose both `secrets-store@1.1.0` and the legacy `@1.0.0` import.
     pub secrets_store_v1_1: Option<fn(&mut T) -> &mut dyn secrets_store::SecretsStoreHostV1_1>,
@@ -58,7 +61,9 @@ pub fn add_all_v1_to_linker<T>(
     if let Some(get) = fns.telemetry_logger {
         telemetry_logger::add_telemetry_logger_to_linker(linker, get)?;
     }
-    if let Some(get) = fns.state_store {
+    if let Some(get) = fns.state_store_v1_1 {
+        state_store::add_state_store_compat_to_linker(linker, get)?;
+    } else if let Some(get) = fns.state_store {
         state_store::add_state_store_to_linker(linker, get)?;
     }
     if let Some(get) = fns.secrets_store_v1_1 {
