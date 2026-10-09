@@ -13,6 +13,9 @@ pub use v1::{
         add_secrets_store_compat_to_linker, add_secrets_store_to_linker,
         add_secrets_store_v1_1_to_linker,
     },
-    state_store::add_state_store_to_linker,
+    state_store::{
+        StateStoreHostV1_1, add_state_store_compat_to_linker, add_state_store_to_linker,
+        add_state_store_v1_1_to_linker,
+    },
     telemetry_logger::add_telemetry_logger_to_linker,
 };

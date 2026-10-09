@@ -56,7 +56,17 @@ fn packaged_guest_crate_builds_as_a_standalone_component_consumer() {
             eprintln!("skipping packaged guest smoke test: crates.io index unavailable");
             return;
         }
-        panic!("command failed with status {}", package_output.status);
+        if is_sibling_not_yet_published(&stderr) {
+            eprintln!(
+                "skipping packaged guest smoke test: greentic-interfaces {} is not on crates.io yet",
+                env!("CARGO_PKG_VERSION")
+            );
+            return;
+        }
+        panic!(
+            "command failed with status {}: {stderr}",
+            package_output.status
+        );
     }
 
     let crate_file = match latest_packaged_crate(&package_dir, "greentic-interfaces-guest") {
@@ -312,6 +322,14 @@ fn is_crates_io_index_unavailable(stderr: &str) -> bool {
     stderr.contains("Could not resolve host: index.crates.io")
         || stderr.contains("failed to download from `https://index.crates.io/config.json`")
         || stderr.contains("download of config.json failed")
+}
+
+/// `cargo package` rewrites the sibling path dep into a registry dep, so it can
+/// only resolve once that sibling is on crates.io. On the first PR of a new
+/// minor lane it never is — this repo's own publish is what puts it there. The
+/// next dev-publish closes the gap and the test runs for real again.
+fn is_sibling_not_yet_published(stderr: &str) -> bool {
+    stderr.contains("failed to select a version for the requirement `greentic-interfaces")
 }
 
 fn latest_packaged_crate(package_dir: &Path, name: &str) -> Option<PathBuf> {

@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: MIT
+
+package greentic:state@1.1.0;
+
+use greentic:interfaces-types/types@0.1.0;
+
+interface state-store {
+  use greentic:interfaces-types/types@0.1.0.{state-key, tenant-ctx};
+
+  /// Canonical host error payload.
+  record host-error {
+    code: string,
+    message: string,
+  }
+
+  /// Trivial acknowledgment for write/delete.
+  enum op-ack { ok }
+
+  /// Reads a namespaced blob of state.
+  read: func(key: state-key, ctx: option<tenant-ctx>) -> result<list<u8>, host-error>;
+
+  /// Writes a namespaced blob of state.
+  write: func(
+    key: state-key,
+    bytes: list<u8>,
+    ctx: option<tenant-ctx>
+  ) -> result<op-ack, host-error>;
+
+  /// Deletes a namespaced blob of state.
+  delete: func(key: state-key, ctx: option<tenant-ctx>) -> result<op-ack, host-error>;
+
+  /// Atomically writes `bytes` only when no live value exists for `key`.
+  /// Returns `true` when this call created the key, `false` when a live value
+  /// already existed and was left untouched. An expired value counts as absent.
+  write-if-absent: func(
+    key: state-key,
+    bytes: list<u8>,
+    ctx: option<tenant-ctx>
+  ) -> result<bool, host-error>;
+}
+
+world store {
+  import state-store;
+}

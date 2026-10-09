@@ -115,6 +115,11 @@ pub mod provider_common {
 /// v1 host capability contracts.
 pub mod state {
     pub use greentic_interfaces::state_store_v1::*;
+
+    /// `greentic:state/store@1.1.0` bindings (adds `write-if-absent`).
+    pub mod v1_1 {
+        pub use greentic_interfaces::state_store_v1_1::*;
+    }
 }
 
 /// v1 host capability contracts.

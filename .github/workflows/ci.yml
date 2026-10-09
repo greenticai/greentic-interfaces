@@ -17,3 +17,58 @@ jobs:
       rust-version: "1.95.0"
       setup-script: |
         rustup override set 1.95.0
+
+  # The shared pr-ci.yml reusable runs fmt + clippy + test + build only. Every
+  # repo-specific gate in ci/local_check.sh therefore ran nowhere but a
+  # developer's laptop. A fleet survey found 8 repos in that state; this repo
+  # was the worst of them, and the reason is what these gates protect:
+  # greentic-interfaces owns the canonical `greentic:*` WIT packages, so it is
+  # the repo most able to violate the one-definition invariant — and it was the
+  # only one of pack / component / flow / interfaces where the check never ran.
+  # A duplicate definition compiles fine and then produces a silent runtime ABI
+  # mismatch, which is the worst failure shape available here.
+  #
+  # Only gates proven green against this branch are wired. `wit_ownership_lint.sh`
+  # is deliberately NOT here: it currently reports 93 shared-type ownership
+  # violations on develop, so wiring it would turn CI red for everyone. That is a
+  # real finding needing its own decision (fix the violations, narrow the lint, or
+  # make it advisory) — not something to smuggle in behind a CI change.
+  wit-gates:
+    name: WIT + naming gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # All three lints below search with ripgrep. They fail closed without it
+      # rather than passing vacuously, but install it so they actually run.
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@1.95.0
+
+      - name: Canonical WIT is defined exactly once
+        run: bash ci/check_no_duplicate_canonical_wit.sh .
+
+      - name: Naming lint
+        run: bash scripts/naming_lint.sh
+
+      - name: WIT lint
+        run: bash scripts/wit_lint.sh
+
+      # Packages this crate and builds a throwaway consumer against it, so a
+      # published-shape break surfaces here instead of at a downstream repo.
+      #
+      # LOCAL_CHECK_ONLINE=1 is required on a runner, not optional. The script
+      # defaults to `cargo --offline`, which only resolves against an already
+      # populated registry cache — fine on a developer box, fatal on a cold
+      # runner. The first CI attempt failed exactly there:
+      #   error: no matching package named `constant_time_eq` found
+      #   ...you're using offline mode (--offline)
+      # That hidden dependency on a warm cache is why this gate could never have
+      # run in CI as written. Online resolution is also the more faithful check:
+      # a real external consumer resolves from crates.io.
+      - name: External consumer builds against the packaged crate
+        env:
+          LOCAL_CHECK_ONLINE: "1"
+        run: bash ci/steps/external_consumer_check.sh

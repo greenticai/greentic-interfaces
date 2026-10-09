@@ -290,14 +290,14 @@ dependencies = [
 
 [[package]]
 name = "component-describe"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "wit-bindgen",
 ]
 
 [[package]]
 name = "component-v060-canonical-dummy"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "greentic-interfaces-guest",
 ]
@@ -604,7 +604,7 @@ dependencies = [
 
 [[package]]
 name = "distributor-api-dummy"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "wit-bindgen",
 ]
@@ -811,7 +811,7 @@ checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 
 [[package]]
 name = "greentic-interfaces"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "anyhow",
  "constant_time_eq",
@@ -833,14 +833,14 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-crates-io-consumer"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "greentic-interfaces",
 ]
 
 [[package]]
 name = "greentic-interfaces-guest"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "greentic-interfaces",
  "greentic-types",
@@ -852,7 +852,7 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-host"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "greentic-interfaces",
  "greentic-types",
@@ -863,7 +863,7 @@ dependencies = [
 
 [[package]]
 name = "greentic-interfaces-wasmtime"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "anyhow",
  "camino",
@@ -879,9 +879,9 @@ dependencies = [
 
 [[package]]
 name = "greentic-types"
-version = "1.1.0-dev.28349771865"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b4b060adbb4c91189385728573f655a86ff67f1ea80c3ef3e5c7bbd8a26b8468"
+checksum = "409fdf5b7def9eef17a9610243cacdfe36b0b30e9d4f1077f4bbb6a59b1262be"
 dependencies = [
  "anyhow",
  "blake3",
@@ -904,7 +904,7 @@ dependencies = [
 
 [[package]]
 name = "guest-node-minimal"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "greentic-interfaces-guest",
  "greentic-types",
@@ -1271,7 +1271,7 @@ dependencies = [
 
 [[package]]
 name = "oauth-broker-client-harness"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "wit-bindgen",
 ]
@@ -1354,7 +1354,7 @@ dependencies = [
 
 [[package]]
 name = "provider-core-dummy"
-version = "1.1.0-dev.0"
+version = "1.2.0"
 dependencies = [
  "wit-bindgen",
 ]

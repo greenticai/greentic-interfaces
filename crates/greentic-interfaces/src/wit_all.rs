@@ -281,6 +281,16 @@ declare_world!(
     }
 );
 
+#[cfg(feature = "state-store-v1-1")]
+declare_world!(
+    mod state_store_v1_1,
+    path = "bundled-wit/greentic-state-1.1.0",
+    world = "greentic:state/store@1.1.0",
+    legacy = {
+        pub const PACKAGE_ID: &str = "greentic:state@1.1.0";
+    }
+);
+
 #[cfg(feature = "http-client-v1")]
 declare_world!(
     mod http_client_v1,
