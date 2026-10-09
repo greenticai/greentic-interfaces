@@ -32,7 +32,7 @@ serde_json = "1"
 semver = "1"
 time = "0.3"
 thiserror = "2"
-wasmtime-wasi = "45"
+wasmtime-wasi = "46"
 wit-bindgen-core = "0.57"
 wit-bindgen-rust = "0.57"
 wit-parser = "0.247"
@@ -67,7 +67,7 @@ features = [
 ]
 
 [workspace.dependencies.wasmtime]
-version = "45"
+version = "46"
 default-features = false
 features = [
     "component-model",
