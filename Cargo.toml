@@ -67,7 +67,7 @@ features = [
 ]
 
 [workspace.dependencies.wasmtime]
-version = "45"
+version = "46"
 default-features = false
 features = [
     "component-model",
